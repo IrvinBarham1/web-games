@@ -1,0 +1,1 @@
+A React and Node.js web application that will use AWS services

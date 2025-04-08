@@ -15,18 +15,6 @@ function App () {
   const [backendData, setBackendData] = useState([{}])
   const [leaderboard, setLeaderboard] = useState([{}])
 
-  const [gameStarted, setGameStarted] = useState(false)
-  const [gameOver, setGameOver] = useState(false)
-  const [playerScore, setPlayerScore] = useState(0)
-  const [computerScore, setComputerScore] = useState(0)
-  const [playerChoice, setPlayerChoice] = useState("")
-  const [computerChoice, setComputerChoice] = useState("")
-  const [result, setResult] = useState("")
-  const [playerChoiceHistory, setPlayerChoiceHistory] = useState([])
-  const [computerChoiceHistory, setComputerChoiceHistory] = useState([])
-  const [playerScoreHistory, setPlayerScoreHistory] = useState([])
-  const [computerScoreHistory, setComputerScoreHistory] = useState([])
-
   useEffect(() => {
     fetch('/api')
     .then(response => response.json())
@@ -35,22 +23,18 @@ function App () {
     .then(response => response.json())
     .then(data => {setLeaderboard(data)})
   }, [])
-/*
-  <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/game" element={<GameLibrary />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/admin" element = {<Admin />} />
-        </Routes>
-      </BrowserRouter>
-      */
+
   return (
-  
-      <Home />
-    
+      <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/library" element={<GameLibrary />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/admin" element = {<Admin />} />
+      </Routes>
+    </BrowserRouter>
     )
 }
 
-export default App
+export default App;

@@ -1,4 +1,7 @@
+import { Link } from 'react-router-dom';
 import "../pages/Navbar.css";
+
+import GameLibrary from "../pages/GameLibrary";
 
 const Navbar = () => {
     return (
@@ -8,9 +11,18 @@ const Navbar = () => {
                 <h1>Irvin's Games</h1>
             </div>
                 <ul class ="nav-links">
-                    <li><a href='#'>Library</a></li>
-                    <li><a href='#'>Leaderboard</a></li>
-                    <li><a href='#'>Contact Us</a></li>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/library">Library</Link>
+                    </li>
+                    <li>
+                        <Link to="/leaderboard">Leaderboard</Link>
+                    </li>
+                    <li>
+                        <Link to="/contact-us">Contact Us</Link>
+                    </li>
                 </ul>
         </div>
     )

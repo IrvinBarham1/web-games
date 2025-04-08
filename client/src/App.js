@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import Navbar from "./components/Navbar";
-import GameView from "./components/GameView";
+import Navbar from "./places/components/Navbar";
+import GameView from "./places/components/GameView";
+
+import Home from "./places/pages/Home";
+import GameLibrary from "./places/pages/GameLibrary";
+import Leaderboard from "./places/pages/Leaderboard";
+import ContactUs from "./places/pages/ContactUs";
+import Admin from "./places/pages/Admin";
+
 
 function App () {
   const [backendData, setBackendData] = useState([{}])
@@ -27,15 +35,21 @@ function App () {
     .then(response => response.json())
     .then(data => {setLeaderboard(data)})
   }, [])
-
-
-
+/*
+  <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/game" element={<GameLibrary />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/admin" element = {<Admin />} />
+        </Routes>
+      </BrowserRouter>
+      */
   return (
-    <div>
-      <Navbar />
-      <GameView />
-      {(typeof backendData === 'undefined')?(<p>loading</p>): (<p>{backendData.message}</p>)}
-    </div>
+  
+      <Home />
+    
     )
 }
 

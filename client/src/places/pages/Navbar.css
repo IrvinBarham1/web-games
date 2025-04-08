@@ -1,0 +1,27 @@
+.nav-container {
+    margin: 20px; 
+    background-color: #38974c;
+    color:#fff;   
+    grid-template-columns: 1fr auto;
+    display: flex;
+    font-family: serif;
+}
+
+.nav-image-container{
+    max-height: 75px; 
+    width: auto;
+    object-fit: contain;
+    padding: 3px
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}

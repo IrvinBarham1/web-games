@@ -1,4 +1,4 @@
-import "../GameView.css";
+import "../pages/GameView.css";
 
 const GameView = () => {
     return (

@@ -5,7 +5,7 @@
 }
 
 .game-name {
-    font-size: 24px;
+    font-size: 26px;
     justify-content: center;
     display: flex;
 }
@@ -27,9 +27,17 @@
     align-items: center;
     font-size: 3rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all .8s ease;
 }
 
 .cell:hover {
-    background: #f0f0f0;
+    background: #31cadf;
   }
+
+button {
+    background-color: #4CAF50;
+    color: #ffffff;
+    font-size: 3rem;
+    width: 75px;
+    height: 75px;
+}

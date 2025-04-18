@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "../pages/GameView.css";
 
 function GameView () {
@@ -13,60 +13,178 @@ function GameView () {
     const [selectedCell_9, setSelectedCell_9] = useState(null);
     const [turnCount, setTurnCount] = useState(1);
     const [clickHistory, setClickHistory] = useState([]);
+    const [gameOver, setGameOver] = useState(false);
+    const [cellNames, setCellNames] = useState(Array(9).fill("cell"));
+
+    useEffect(() => {
+        handleGameWin(); // Check for win after any cell changes
+    }, [selectedCell_1, selectedCell_2, selectedCell_3, selectedCell_4, selectedCell_5, selectedCell_6, selectedCell_7, selectedCell_8, selectedCell_9]);
 
     const handleGameWin = () => {
         //Column Wins
-        if (selectedCell_1 === 'X' && selectedCell_2 === 'X' && selectedCell_3 === 'X') 
+        if (selectedCell_1 === 'X' && selectedCell_2 === 'X' && selectedCell_3 === 'X'){ 
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[0] = newCellNames[1] = newCellNames[2] = "cell-won";
+                return newCellNames;
+            })
             alert("Player X wins!");
-        if (selectedCell_1 === 'O' && selectedCell_2 === 'O' && selectedCell_3 === 'O')
+            return;
+        }
+        if (selectedCell_1 === 'O' && selectedCell_2 === 'O' && selectedCell_3 === 'O'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[0] = newCellNames[1] = newCellNames[2] = "cell-won";
+                return newCellNames;
+            })
             alert("Player O wins!");
-        if (selectedCell_4 === 'X' && selectedCell_5 === 'X' && selectedCell_6 === 'X') 
+            return;
+        }
+        if (selectedCell_4 === 'X' && selectedCell_5 === 'X' && selectedCell_6 === 'X'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[3] = newCellNames[4] = newCellNames[5] = "cell-won";
+                return newCellNames;
+            })
             alert("Player X wins!");
-        if (selectedCell_4 === 'O' && selectedCell_5 === 'O' && selectedCell_6 === 'O')
+        } 
+        if (selectedCell_4 === 'O' && selectedCell_5 === 'O' && selectedCell_6 === 'O'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[3] = newCellNames[4] = newCellNames[5] = "cell-won";
+                return newCellNames;
+            })
             alert("Player O wins!");
-        if (selectedCell_7 === 'X' && selectedCell_8 === 'X' && selectedCell_9 === 'X') 
+        }
+        if (selectedCell_7 === 'X' && selectedCell_8 === 'X' && selectedCell_9 === 'X'){
+            setGameOver(true);
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[6] = newCellNames[7] = newCellNames[8] = "cell-won";
+                return newCellNames;
+            })
             alert("Player X wins!");
-        if (selectedCell_7 === 'O' && selectedCell_8 === 'O' && selectedCell_9 === 'O')
+        } 
+        if (selectedCell_7 === 'O' && selectedCell_8 === 'O' && selectedCell_9 === 'O'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[6] = newCellNames[7] = newCellNames[8] = "cell-won";
+                return newCellNames;
+            })
             alert("Player O wins!");
+        }
         //Row Wins
-        if (selectedCell_1 === 'X' && selectedCell_4 === 'X' && selectedCell_7 === 'X') 
+        if (selectedCell_1 === 'X' && selectedCell_4 === 'X' && selectedCell_7 === 'X'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[0] = newCellNames[3] = newCellNames[6] = "cell-won";
+                return newCellNames;
+            })
             alert("Player X wins!");
-        if (selectedCell_1 === 'O' && selectedCell_4 === 'O' && selectedCell_7 === 'O')
+        } 
+        if (selectedCell_1 === 'O' && selectedCell_4 === 'O' && selectedCell_7 === 'O'){
+            setGameOver(true);  
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[0] = newCellNames[3] = newCellNames[6] = "cell-won";
+                return newCellNames;
+            })
             alert("Player O wins!");
-        if (selectedCell_2 === 'X' && selectedCell_5 === 'X' && selectedCell_8 === 'X') 
+        }
+        if (selectedCell_2 === 'X' && selectedCell_5 === 'X' && selectedCell_8 === 'X'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[1] = newCellNames[4] = newCellNames[7] = "cell-won";
+                return newCellNames;
+            })
             alert("Player X wins!");
-        if (selectedCell_2 === 'O' && selectedCell_5 === 'O' && selectedCell_8 === 'O')
+        } 
+        if (selectedCell_2 === 'O' && selectedCell_5 === 'O' && selectedCell_8 === 'O'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[1] = newCellNames[4] = newCellNames[7] = "cell-won";
+                return newCellNames;
+            })
             alert("Player O wins!");
-        if (selectedCell_3 === 'X' && selectedCell_6 === 'X' && selectedCell_9 === 'X') 
+        }
+        if (selectedCell_3 === 'X' && selectedCell_6 === 'X' && selectedCell_9 === 'X'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[2] = newCellNames[5] = newCellNames[8] = "cell-won";
+                return newCellNames;
+            })
             alert("Player X wins!");
-        if (selectedCell_3 === 'O' && selectedCell_6 === 'O' && selectedCell_9 === 'O')
+        } 
+        if (selectedCell_3 === 'O' && selectedCell_6 === 'O' && selectedCell_9 === 'O'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[2] = newCellNames[5] = newCellNames[8] = "cell-won";
+                return newCellNames;
+            });
             alert("Player O wins!");
+        }
         //Diagonal Wins
-        if (selectedCell_1 === 'X' && selectedCell_5 === 'X' && selectedCell_9 === 'X') 
+        if (selectedCell_1 === 'X' && selectedCell_5 === 'X' && selectedCell_9 === 'X'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[0] = newCellNames[4] = newCellNames[8] = "cell-won";
+                return newCellNames;
+            })
             alert("Player X wins!");
-        if (selectedCell_1 === 'O' && selectedCell_5 === 'O' && selectedCell_9 === 'O')
+        } 
+        if (selectedCell_1 === 'O' && selectedCell_5 === 'O' && selectedCell_9 === 'O'){
+            setGameOver(true); 
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[0] = newCellNames[4] = newCellNames[8] = "cell-won";
+                return newCellNames;
+            })
             alert("Player O wins!");
-        if (selectedCell_3 === 'X' && selectedCell_5 === 'X' && selectedCell_7 === 'X') 
+        }
+        if (selectedCell_3 === 'X' && selectedCell_5 === 'X' && selectedCell_7 === 'X'){
+            setGameOver(true);   
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[2] = newCellNames[4] = newCellNames[6] = "cell-won";
+                return newCellNames;
+            })
             alert("Player X wins!");
-        if (selectedCell_3 === 'O' && selectedCell_5 === 'O' && selectedCell_7 === 'O')
+        } 
+        if (selectedCell_3 === 'O' && selectedCell_5 === 'O' && selectedCell_7 === 'O'){
+            setGameOver(true);  
+            setCellNames(prev => {
+                const newCellNames = [...prev];
+                newCellNames[2] = newCellNames[4] = newCellNames[6] = "cell-won";
+                return newCellNames;
+            })
             alert("Player O wins!");
+        }
         //Cat's Game
         if ([selectedCell_1, selectedCell_2, selectedCell_3, selectedCell_4, selectedCell_5, selectedCell_6, selectedCell_7, selectedCell_8, selectedCell_9].every(cell => cell !== null) ) {
+            setGameOver(true); 
             alert("It's a cat's game!");
         }
     }
+
     const handleCellClick = (num) => {
-        setClickHistory(prev => [...prev, num]);
+        setClickHistory(prev => [...prev, num]);  // Prevents misclicks from messing up the game
         setTurnCount(prevTurnCount => {
-            if (prevTurnCount >= 4) {
-                handleGameWin();
-            }
             if (clickHistory.includes(num))
                 return turnCount;
             else {
                 const newTurnCount = prevTurnCount + 1;
                 const mark = newTurnCount % 2 === 0 ? "X" : "O";
-
                 switch(num){
                     case 1: setSelectedCell_1(mark); return newTurnCount;
                     case 2: setSelectedCell_2(mark); return newTurnCount;
@@ -85,57 +203,58 @@ function GameView () {
     return (
     <div className="game-container">
         <h1 className="game-name">tic tac toe</h1>
-            <div className="game-board">
+            <div id="game" className="game-board">
                 <div className="column1">
-                    <div className="cell">
+                    <div className={cellNames[0]}>
                         <button onClick={() => handleCellClick(1)} className="cell-button">
                             {selectedCell_1}
                         </button>
                     </div>
-                    <div className="cell">
+                    <div className={cellNames[1]}>
                         <button onClick={() => handleCellClick(2)} className="cell-button">
                             {selectedCell_2}
                         </button>
                     </div>
-                    <div className="cell">
+                    <div className={cellNames[2]}>
                         <button onClick={() => handleCellClick(3)} className="cell-button">
                             {selectedCell_3}
                         </button>
                     </div>
                 </div>
                 <div className="column2">
-                    <div className="cell">
+                    <div className={cellNames[3]}>
                         <button onClick={() => handleCellClick(4)} className="cell-button">
                             {selectedCell_4}
                         </button>
                     </div>
-                    <div className="cell">
+                    <div className={cellNames[4]}>
                         <button onClick={() => handleCellClick(5)} className="cell-button">
                             {selectedCell_5}
                         </button>
                     </div>
-                    <div className="cell">
+                    <div className={cellNames[5]}>
                         <button onClick={() => handleCellClick(6)} className="cell-button">
                             {selectedCell_6}
                         </button>
                     </div>
                 </div>
                 <div className="column3">
-                    <div className="cell">
+                    <div className={cellNames[6]}>
                         <button onClick={() => handleCellClick(7)} className="cell-button">
                             {selectedCell_7}
                         </button>
                     </div>
-                    <div className="cell">
+                    <div className={cellNames[7]}>
                         <button onClick={() => handleCellClick(8)} className="cell-button">
                             {selectedCell_8}
                         </button>
                     </div>
-                    <div className="cell">
+                    <div className={cellNames[8]}>
                         <button onClick={() => handleCellClick(9)} className="cell-button">
                             {selectedCell_9}
                         </button>
                     </div>
+                    
                 </div>
             </div>
     </div>

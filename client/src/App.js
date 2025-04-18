@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import Navbar from "./places/components/Navbar";
-import GameView from "./places/components/GameView";
-
 import Home from "./places/pages/Home";
 import GameLibrary from "./places/pages/GameLibrary";
 import Leaderboard from "./places/pages/Leaderboard";

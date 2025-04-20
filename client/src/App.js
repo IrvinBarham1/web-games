@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
+import Login from "./user/pages/login";
 import Home from "./places/pages/Home";
 import GameLibrary from "./places/pages/GameLibrary";
 import Leaderboard from "./places/pages/Leaderboard";
@@ -24,7 +25,8 @@ function App () {
   return (
       <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/library" element={<GameLibrary />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/contact-us" element={<ContactUs />} />

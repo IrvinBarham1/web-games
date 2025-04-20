@@ -14,12 +14,35 @@ function GameView () {
     const [turnCount, setTurnCount] = useState(1);
     const [clickHistory, setClickHistory] = useState([]);
     const [gameOver, setGameOver] = useState(false);
+    const [reset, setReset] = useState(false);
     const [cellNames, setCellNames] = useState(Array(9).fill("cell"));
 
+ // Check for win after any cell changes
     useEffect(() => {
-        handleGameWin(); // Check for win after any cell changes
+        handleGameWin(); 
     }, [selectedCell_1, selectedCell_2, selectedCell_3, selectedCell_4, selectedCell_5, selectedCell_6, selectedCell_7, selectedCell_8, selectedCell_9]);
 
+// Generate restart
+    useEffect(() => {
+        if (reset) 
+            restart();
+    }, [reset])
+
+    const restart = () => {
+        setReset(false);
+        setGameOver(false);
+        setClickHistory([]);
+        setCellNames(prev => Array(9).fill("cell"));
+        setSelectedCell_1("");
+        setSelectedCell_2("");
+        setSelectedCell_3("");
+        setSelectedCell_4("");
+        setSelectedCell_5("");
+        setSelectedCell_6("");
+        setSelectedCell_7("");
+        setSelectedCell_8("");
+        setSelectedCell_9("");
+    }
     const handleGameWin = () => {
         //Column Wins
         if (selectedCell_1 === 'X' && selectedCell_2 === 'X' && selectedCell_3 === 'X'){ 
@@ -171,16 +194,20 @@ function GameView () {
             alert("Player O wins!");
         }
         //Cat's Game
-        if ([selectedCell_1, selectedCell_2, selectedCell_3, selectedCell_4, selectedCell_5, selectedCell_6, selectedCell_7, selectedCell_8, selectedCell_9].every(cell => cell !== null) ) {
+        if ([selectedCell_1, selectedCell_2, selectedCell_3, selectedCell_4, selectedCell_5, selectedCell_6, selectedCell_7, selectedCell_8, selectedCell_9].every(cell => cell === "X" || cell === "O") ) {
             setGameOver(true); 
             alert("It's a cat's game!");
         }
     }
 
     const handleCellClick = (num) => {
+        if (gameOver){
+            alert("Games over, please restart");
+            return;
+        }
         setClickHistory(prev => [...prev, num]);  // Prevents misclicks from messing up the game
         setTurnCount(prevTurnCount => {
-            if (clickHistory.includes(num))
+            if (clickHistory.includes(num)) // Prevents changing marks on board
                 return turnCount;
             else {
                 const newTurnCount = prevTurnCount + 1;
@@ -203,6 +230,7 @@ function GameView () {
     return (
     <div className="game-container">
         <h1 className="game-name">tic tac toe</h1>
+        <button className="restart-button" onClick={() => setReset(true)}>Restart</button>
             <div id="game" className="game-board">
                 <div className="column1">
                     <div className={cellNames[0]}>

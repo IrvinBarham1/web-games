@@ -1,0 +1,33 @@
+.game-name {
+    font-size: 26px;
+    justify-content: center;
+    display: flex;
+}
+.image-board{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    justify-self: center;
+    grid-template-columns: repeat(10, 100px);
+    grid-template-rows: repeat(10, 100px);
+    height: 70vh;
+}
+.baord-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 500px; /* adjust to your image size */
+    height: 500px; /* adjust to your image size */
+    gap: 1px;
+  }
+
+  .board-row {
+    display: contents;
+  }
+  
+  .board-col {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    /* Optional: center content */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

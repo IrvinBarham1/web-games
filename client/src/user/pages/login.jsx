@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import "./login.css"
 
 
 const Login = () => {
@@ -8,6 +9,7 @@ const Login = () => {
     const [password, setPassword] = useState(null);
     const [authUsers, setAuthUsers] = useState([]);
     const [authPass, setAuthPass] = useState([]);
+    const [loginAlert, setLoginAlert] = useState(null);
 
     useEffect(() => {
         fetch('/authUsers')
@@ -20,15 +22,18 @@ const Login = () => {
 
     const Authorize = (event) => {
         event.preventDefault();
-        const form = event.target;
-        if(authUsers.includes(userName) && authPass.includes(form.password.value)){
-            alert("Youre in!");
-            navigate('/home', {replace: true});
+        if(authUsers.includes(userName) && authPass.includes(password)){
+            setLoginAlert("Validating account in S3 Database..."); //Placeholder for database validation
+            setTimeout(() => {
+                navigate('/home', {replace: true});
+            }, 3000);
         }
         else{
-            alert("Incorrect Login");
-            setUserName('');
-            setPassword('');     
+            setLoginAlert("Failed Try Again");
+            setTimeout(() => {
+                setUserName('');
+                setPassword(''); 
+            }, 1000);   
         }   
     }
 
@@ -42,7 +47,8 @@ const Login = () => {
                 <label>Password:</label>
                 <input type="password" name="password" value={password} onChange={pass => setPassword(pass.target.value)} required/>
                 <br/>
-                <button type="submit">Login</button>
+                <button class="login-button" type="submit">Login</button>
+                <p class="login-alert">{loginAlert}</p>
             </form>
         </div>
     )

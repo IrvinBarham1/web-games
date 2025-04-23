@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import "../pages/GameView.css";
+import "./assets/TicTacToe.css";
 
-function GameView () {
+function TicTacToe () {
     const [selectedCell_1, setSelectedCell_1] = useState(null);
     const [selectedCell_2, setSelectedCell_2] = useState(null);
     const [selectedCell_3, setSelectedCell_3] = useState(null);
@@ -289,4 +289,4 @@ function GameView () {
     )
 }
 
-export default GameView;
+export default TicTacToe;

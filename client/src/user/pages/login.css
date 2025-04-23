@@ -1,0 +1,42 @@
+body {
+    background-color: azure;
+}
+
+.login {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    padding: 15px;
+
+
+}
+form {
+    background-color: beige;
+    display: flexbox;
+    width: 100%;
+    height: auto;
+    padding: 25px;
+
+}
+.login-button {
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    justify-self: center;
+    font-size: 1rem;
+}
+label {
+    display: flex;
+    justify-content: center;
+}
+input {
+    display: flex;
+    justify-self: center;
+}
+
+.login-alert {
+    display: flex;
+    justify-content: center;
+    font-weight:bold;
+    color: #ff0000;
+}

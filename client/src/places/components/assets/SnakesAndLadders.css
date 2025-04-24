@@ -1,33 +1,53 @@
+.game-container {
+    display: grid;
+    justify-content: center;
+    color: black;
+    width: auto;
+    height: auto;
+}
+.game-container-right {
+  position:static;
+  display: flex;
+  justify-content: end;
+  color: black;
+  width: auto;
+  height: auto;
+}
 .game-name {
     font-size: 26px;
     justify-content: center;
     display: flex;
 }
-.image-board{
+
+.image-board {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     justify-self: center;
-    grid-template-columns: repeat(10, 100px);
-    grid-template-rows: repeat(10, 100px);
     height: 70vh;
+    position: absolute;
+    margin-top: 75px;
 }
-.baord-container {
+
+.board-container {
+    position: relative;
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    width: 500px; /* adjust to your image size */
-    height: 500px; /* adjust to your image size */
-    gap: 1px;
+    grid-template-columns: repeat(10, 10fr);;
+    margin-top: 34px;
   }
 
-  .board-row {
-    display: contents;
-  }
-  
-  .board-col {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    /* Optional: center content */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.cell-sal {
+  width: 66px;
+  height: 66px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #333;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all .8s ease;
+  opacity: 50%;
+}
+
+.cell-sal:hover {
+  background: #31cadf;
+}

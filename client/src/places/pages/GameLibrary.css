@@ -1,7 +1,20 @@
-.game-names {
+.games-list {
     display: grid;
+    position: fixed;
     width: fit-content;
     height: fit-content;
+    background-color: bisque;
+}
+.game-names {
+    position: relative;
+    width: auto;
+    height: fit-content;
+    justify-self: left;
     font-size: 1rem;
     padding: 10px 15px;
+}
+
+.page-name{
+    position: relative;
+    display: block;
 }

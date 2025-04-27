@@ -21,6 +21,8 @@ function SnakesAndLadders () {
             <h1 className="game-name">Snakes and Ladders</h1>
             <div className="game-container-right">
                 <h3>Game Settings</h3>
+                <p>Players</p>
+                <p>Pick Color</p>
             </div>
             <img className="image-board" src="/snakesladdersboard.jpg" alt="Board Game"/>
             <div className="board-container">

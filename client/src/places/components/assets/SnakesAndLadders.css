@@ -1,51 +1,57 @@
 .game-container {
-    display: grid;
-    justify-content: center;
-    color: black;
-    width: auto;
-    height: auto;
-}
-.game-container-right {
-  position:static;
-  display: flex;
-  justify-content: end;
-  color: black;
   width: auto;
   height: auto;
 }
+
+.game-container-right {
+  position: absolute;
+  display:  inline-block;
+  margin-left: 75%;
+}
+
 .game-name {
-    font-size: 26px;
-    justify-content: center;
-    display: flex;
+  font-size: 26px;
+  position: relative;
+  display: inline-block;
+  justify-self: center;
 }
 
 .image-board {
-    display: grid;
-    justify-self: center;
-    height: 70vh;
-    position: absolute;
-    margin-top: 75px;
+  position: relative;
+  display: inline-block;
+  margin: 50%;
+  justify-self: center;
+  position: absolute;
+  margin-top: 75px;
+  width: 350px;
+  height: 350px;
 }
 
 .board-container {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(10, 10fr);;
-    margin-top: 34px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(10, 10fr);;
+  margin-top: 34px;
+  max-width: 100%;
+  width: auto;
+  height: auto;
   }
 
 .cell-sal {
-  width: 66px;
-  height: 66px;
   display: flex;
   justify-content: center;
-  align-items: center;
   background: #fff;
   border: 1px solid #333;
   font-size: 1rem;
   cursor: pointer;
   transition: all .8s ease;
   opacity: 50%;
+  min-width: 23px;
+  min-height: 13px;
+  max-height: 66px;
+  max-width: 66px;
+  height: auto;
+  width: auto;
 }
 
 .cell-sal:hover {

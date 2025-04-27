@@ -1,10 +1,11 @@
 .nav-container {
-    margin: 20px; 
     background-color: #38974c;
     color:#fff;   
     grid-template-columns: 1fr auto;
     display: flex;
     font-family: serif;
+    width: 100%;
+    opacity: 95%;
 }
 
 .nav-image-container{

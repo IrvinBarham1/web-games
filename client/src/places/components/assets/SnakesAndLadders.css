@@ -9,7 +9,15 @@
   margin-left: 75%;
 }
 
-.game-name {
+.button-settings {
+  position: relative;
+  display: inline-block;
+  width: fit-content;
+  height: fit-content;
+  font-size: 16px;
+  justify-self: center;
+}
+.game-info {
   font-size: 26px;
   position: relative;
   display: inline-block;
@@ -31,7 +39,7 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(10, 10fr);;
-  margin-top: 34px;
+  margin-top: 6%;
   max-width: 100%;
   width: auto;
   height: auto;
@@ -46,12 +54,8 @@
   cursor: pointer;
   transition: all .8s ease;
   opacity: 50%;
-  min-width: 23px;
-  min-height: 13px;
-  max-height: 66px;
-  max-width: 66px;
-  height: auto;
-  width: auto;
+  height: 30px;
+  width: 30px;
 }
 
 .cell-sal:hover {

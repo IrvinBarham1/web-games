@@ -3,10 +3,34 @@ import "./assets/SnakesAndLadders.css";
 
 function SnakesAndLadders () {
     const [board, setBoard] = useState(Array.from({ length: 10 }, () => Array(10).fill(0)));
+    const [numPlayers, setNumPlayers] = useState(2);
+    const [toggleSettings, setToggleSettings] = useState(true);
+    const [symbols, setSymbols] = useState([null])
+    const [playerNames, setPlayerNames] = useState(["Default Name"])
 
     useEffect(() => {
 
     }, []);
+
+    const hideGameSettings = () => {
+        setToggleSettings(!toggleSettings);
+    }
+
+    const GameSettings = () => (
+        <div>
+            <label>Players</label>
+            <input type="number" name="players" max="6" min="2" value={numPlayers} onChange={players => setNumPlayers(players.target.value)} required />
+            <label>Set Player Symbol</label>
+            {Array.from({length:numPlayers}).map((count,index) => (
+                <ul>
+                    <li key={index}>{playerNames[index]} {index+1}<input maxLength = "10" placeholder="set name" type="text"></input>
+                    <input maxLength = "1" placeholder="set symbol"type="text" value={symbols[index]}></input></li>
+                </ul>
+            ))}
+
+            <button type="submit" className="button-settings">Save Changes</button>
+        </div>
+    )
 
     const rollDice = () => {
         return Math.floor(Math.random() * 6) + 1;
@@ -20,9 +44,11 @@ function SnakesAndLadders () {
         <div className="game-container">
             <h1 className="game-name">Snakes and Ladders</h1>
             <div className="game-container-right">
-                <h3>Game Settings</h3>
-                <p>Players</p>
-                <p>Pick Color</p>
+                <button className="button-settings" onClick={() => hideGameSettings()}>
+                    Show Game Settings
+                </button>
+                {toggleSettings && <GameSettings/>}
+                
             </div>
             <img className="image-board" src="/snakesladdersboard.jpg" alt="Board Game"/>
             <div className="board-container">

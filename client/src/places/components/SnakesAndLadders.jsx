@@ -10,6 +10,9 @@ function SnakesAndLadders () {
     const [toggleDice, setToggleDice] = useState(false);
     const [diceValue, setDiceValue] = useState(0);
     const [positions, setPositions] = useState([null]);
+    const [currentTurnNum, setCurrentTurnNum] = useState(0);
+
+    let sixFlag = false;
 
     const players = {
         num: numPlayers,
@@ -76,6 +79,8 @@ function SnakesAndLadders () {
         else{
             hideGameSettings()
             hideDice();
+            //create positions for players after settings are validated
+            setPositions(Array.from({length:numPlayers}).fill(0));
         }
     }
     
@@ -86,15 +91,43 @@ function SnakesAndLadders () {
     const Dice = () => {
         return (
             <div>
-                <label>It's {playerNames} Turn to Roll</label>
-                <button className="button-settings" onClick={() => rollDice()}> You Rolled a {diceValue}</button>
+                <label>{playerNames[currentTurnNum]}'s {symbols[currentTurnNum]} Turn to Roll</label>
+                <button className="button-settings" onClick={() => rollDice(playerNames[currentTurnNum], sixFlag, currentTurnNum)}> Roll Dice :  {diceValue}</button> 
+                <div>{playerNames[currentTurnNum]} Previous Position {positions[currentTurnNum]}</div>
             </div>
         )
     }
 
-    const rollDice = () => {
-        //if 6 need to roll again
-        setDiceValue((Math.floor(Math.random() * 6) + 1))
+    const rollDice = (name, sixFlag, currentTurnNum) => {
+        if(sixFlag === false) {
+            let roll = 0;
+            roll = Math.floor(Math.random() * 6) + 1;
+            if (roll === 6) {
+                sixFlag = true;
+                setDiceValue(roll);
+                alert(name + " rolled a six, roll again!");
+            }
+            else {
+                setDiceValue(roll);
+                const newPositions = [...positions];
+                newPositions[currentTurnNum] += roll;
+                setPositions(newPositions);
+                setCurrentTurnNum(prev => prev + 1 > numPlayers - 1 ? 0 : prev + 1);
+            }
+        }
+        if(sixFlag === true){
+            let roll = 0;
+            roll = Math.floor(Math.random() * 6) + 1;
+            if (roll === 6) { 
+                setDiceValue(roll);
+                alert(name + " rolled a six, roll again!");
+            }
+            else {
+                sixFlag = false;
+                roll += diceValue;
+                setDiceValue(roll);
+            }
+        }
     }
 
    const handlePlayerMove = (currentPosition) => {

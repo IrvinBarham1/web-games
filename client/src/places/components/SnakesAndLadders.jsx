@@ -93,7 +93,11 @@ function SnakesAndLadders () {
             <div>
                 <label>{playerNames[currentTurnNum]}'s {symbols[currentTurnNum]} Turn to Roll</label>
                 <button className="button-settings" onClick={() => rollDice(playerNames[currentTurnNum], sixFlag, currentTurnNum)}> Roll Dice :  {diceValue}</button> 
-                <div>{playerNames[currentTurnNum]} Previous Position {positions[currentTurnNum]}</div>
+                <br/>
+                {Array.from({length:numPlayers}).map((count,index) => (
+                    <div>{playerNames[index]} Position {positions[index]}</div>
+                 ))}
+
             </div>
         )
     }
@@ -116,7 +120,8 @@ function SnakesAndLadders () {
             }
         }
         if(sixFlag === true){
-            let roll = 0;
+            alert(name + " is rolling again!");
+            let roll = diceValue;
             roll = Math.floor(Math.random() * 6) + 1;
             if (roll === 6) { 
                 setDiceValue(roll);
@@ -126,14 +131,15 @@ function SnakesAndLadders () {
                 sixFlag = false;
                 roll += diceValue;
                 setDiceValue(roll);
+                const newPositions = [...positions];
+                newPositions[currentTurnNum] += roll;
+                setPositions(newPositions);
+                setCurrentTurnNum(prev => prev + 1 > numPlayers - 1 ? 0 : prev + 1);
             }
         }
     }
 
-   const handlePlayerMove = (currentPosition) => {
-        const diceRoll = rollDice();
-        const newPosition = currentPosition + diceRoll;
-   }
+
     return (
         <div className="game-container">
             <h1 className="game-name">Snakes and Ladders</h1>
@@ -147,71 +153,71 @@ function SnakesAndLadders () {
             <div className="board-container">
                 <div className="column1">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex} className="cell-sal">
-                            {rowIndex}
+                        <div key={rowIndex+1} className="cell-sal">
+                            {rowIndex === positions[currentTurnNum] && <span className="gamePiece-cell">{symbols[currentTurnNum]}</span>}
                         </div>
                     ))}
                 </div>
                 <div className="column2">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex+10} className="cell-sal">
-                            {rowIndex+10}
+                        <div key={20-rowIndex} className="cell-sal">
+                            {20-rowIndex === positions[currentTurnNum] && <span className="gamePiece-cell">{symbols[currentTurnNum]}</span>}
                         </div>
                     ))}
                 </div>
                 <div className="column3">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex+20} className="cell-sal">
-                            {rowIndex+20}
+                        <div key={rowIndex+21} className="cell-sal">
+                            {rowIndex+21 === positions[currentTurnNum] && <span className="gamePiece-cell"n>{symbols[currentTurnNum]}</span>}
                         </div>
                     ))}
                 </div>
                 <div className="column4">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex+30} className="cell-sal">
-                            {rowIndex+30}
+                        <div key={40-rowIndex} className="cell-sal">
+                            {40-rowIndex === positions[currentTurnNum] && <span className="gamePiece-cell">{symbols[currentTurnNum]}</span>}
                         </div>
                     ))}
                 </div>
                 <div className="column5">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex+40} className="cell-sal">
-                            {rowIndex+40}
+                        <div key={rowIndex+41} className="cell-sal">
+                            {rowIndex+41 === positions[currentTurnNum] && <span className="gamePiece-cell">{symbols[currentTurnNum]}</span>}
                         </div>
                     ))}
                 </div>
                 <div className="column6">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex+50} className="cell-sal">
-                            {rowIndex+50}
+                        <div key={60-rowIndex} className="cell-sal">
+                            {60-rowIndex}
                         </div>
                     ))}
                 </div>
                 <div className="column7">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex+60} className="cell-sal">
-                            {rowIndex+60}
+                        <div key={rowIndex+61} className="cell-sal">
+                            {rowIndex+61}
                         </div>
                     ))}
                 </div>
                 <div className="column8">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex+70} className="cell-sal">
-                            {rowIndex+70}
+                        <div key={80-rowIndex} className="cell-sal">
+                            {80-rowIndex}
                         </div>
                     ))}
                 </div>
                 <div className="column9">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex+80} className="cell-sal">
-                            {rowIndex+80}
+                        <div key={rowIndex+81} className="cell-sal">
+                            {rowIndex+81}
                         </div>
                     ))}
                 </div>
                 <div className="column10">
                     {board.map((row, rowIndex) => (
-                        <div key={rowIndex+90} className="cell-sal">
-                            {rowIndex+90}
+                        <div key={100-rowIndex} className="cell-sal">
+                            {100-rowIndex}
                         </div>
                     ))}
                 </div>

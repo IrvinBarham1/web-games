@@ -115,6 +115,13 @@ function SnakesAndLadders () {
                 setDiceValue(roll);
                 const newPositions = [...positions];
                 newPositions[currentTurnNum] += roll;
+                if(newPositions[currentTurnNum] > 100){
+                    newPositions[currentTurnNum] = 100 - (newPositions[currentTurnNum] - 100);
+                    alert(name + " went over 100. Rolled a " + diceValue + ". Moving back to " + newPositions[currentTurnNum]);
+                }
+                if(newPositions[currentTurnNum] === 100){
+                    alert(name + " has reached the end of the board!");
+                }
                 setPositions(newPositions);
                 setCurrentTurnNum(prev => prev + 1 > numPlayers - 1 ? 0 : prev + 1);
             }
@@ -139,6 +146,80 @@ function SnakesAndLadders () {
         }
     }
 
+    const LadderSnakeMove = (cellNum, player) => {
+            if (cellNum === 7) {
+                const newPositions = [...positions];
+                newPositions[player] = 36;
+                setPositions(newPositions);
+                alert(playerNames[player] + " moved up the ladder to 36");
+            }
+            if (cellNum === 21) {
+                const newPositions = [...positions];
+                newPositions[player] = 58;
+                setPositions(newPositions);
+                alert(playerNames[player] + " moved up the ladder to 58");
+            }            
+            if (cellNum === 31) {
+                const newPositions = [...positions];
+                newPositions[player] = 51;
+                setPositions(newPositions);
+                alert(playerNames[player] + " moved up the ladder to 51");
+            }
+            if (cellNum === 33) {
+                const newPositions = [...positions];
+                newPositions[player] = 5;
+                setPositions(newPositions);
+                alert(playerNames[player] + " eaten by a snake to 5");
+            }           
+            if (cellNum === 34) {
+                const newPositions = [...positions];
+                newPositions[player] = 84;
+                setPositions(newPositions);
+                alert(playerNames[player] + " moved up the ladder to 84");
+            }
+            if (cellNum === 43) {
+                const newPositions = [...positions];
+                newPositions[player] = 24;
+                setPositions(newPositions);
+                alert(playerNames[player] + " eaten by a snake to 24");
+            }
+            if (cellNum === 54) {
+                const newPositions = [...positions];
+                newPositions[player] = 89;
+                setPositions(newPositions);
+                alert(playerNames[player] + " moved up the ladder to 89");
+            }
+            if (cellNum === 56) {
+                const newPositions = [...positions];
+                newPositions[player] = 20;
+                setPositions(newPositions);
+                alert(playerNames[player] + " eaten by a snake to 20");
+            }
+            if (cellNum === 63) {
+                const newPositions = [...positions];
+                newPositions[player] = 82;
+                setPositions(newPositions);
+                alert(playerNames[player] + " moved up the ladder to 82");
+            }
+            if (cellNum === 66) {
+                const newPositions = [...positions];
+                newPositions[player] = 12;
+                setPositions(newPositions);
+                alert(playerNames[player] + " eaten by a snake to 12");
+            }
+            if (cellNum === 78) {
+                const newPositions = [...positions];
+                newPositions[player] = 59;
+                setPositions(newPositions);
+                alert(playerNames[player] + " eaten by a snake to 59");
+            }
+            if (cellNum === 96) {
+                const newPositions = [...positions];
+                newPositions[player] = 72;
+                setPositions(newPositions);
+                alert(playerNames[player] + " eaten by a snake to 72");
+            }                  
+    }
 
     return (
         <div className="game-container">
@@ -154,70 +235,112 @@ function SnakesAndLadders () {
                 <div className="column1">
                     {board.map((row, rowIndex) => (
                         <div key={rowIndex+1} className="cell-sal">
-                            {rowIndex === positions[currentTurnNum] && <span className="gamePiece-cell">{symbols[currentTurnNum]}</span>}
+                            {playerNames.map((count, index) => (
+                                <div>
+                                    {positions[index] === 7 ? LadderSnakeMove(7,index) : rowIndex+1 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                            ))}
+                           
                         </div>
                     ))}
                 </div>
                 <div className="column2">
                     {board.map((row, rowIndex) => (
                         <div key={20-rowIndex} className="cell-sal">
-                            {20-rowIndex === positions[currentTurnNum] && <span className="gamePiece-cell">{symbols[currentTurnNum]}</span>}
+                            {playerNames.map((count, index) => (
+                                <div>
+                                    {20-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                            ))}
                         </div>
                     ))}
                 </div>
                 <div className="column3">
                     {board.map((row, rowIndex) => (
                         <div key={rowIndex+21} className="cell-sal">
-                            {rowIndex+21 === positions[currentTurnNum] && <span className="gamePiece-cell"n>{symbols[currentTurnNum]}</span>}
+                            {playerNames.map((count, index) => (
+                                <div>
+                                    {positions[index] === 21 ? LadderSnakeMove(21,index) : rowIndex+21 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                            ))}
                         </div>
                     ))}
                 </div>
                 <div className="column4">
                     {board.map((row, rowIndex) => (
                         <div key={40-rowIndex} className="cell-sal">
-                            {40-rowIndex === positions[currentTurnNum] && <span className="gamePiece-cell">{symbols[currentTurnNum]}</span>}
+                             {playerNames.map((count, index) => (
+                                <div>
+                                    {positions[index] === 31 || positions[index] === 33 || positions[index] === 34 ? LadderSnakeMove(positions[index] ,index) : 
+                                    40-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                             ))}
                         </div>
                     ))}
                 </div>
                 <div className="column5">
                     {board.map((row, rowIndex) => (
                         <div key={rowIndex+41} className="cell-sal">
-                            {rowIndex+41 === positions[currentTurnNum] && <span className="gamePiece-cell">{symbols[currentTurnNum]}</span>}
+                             {playerNames.map((count, index) => (
+                                <div>
+                                    {positions[index] === 43 ? LadderSnakeMove(43,index) : rowIndex+41 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                             ))}
                         </div>
                     ))}
                 </div>
                 <div className="column6">
                     {board.map((row, rowIndex) => (
                         <div key={60-rowIndex} className="cell-sal">
-                            {60-rowIndex}
+                          {playerNames.map((count, index) => (
+                                <div>
+                                    {positions[index] === 54 || positions[index] === 56 ? LadderSnakeMove(positions[index],index) : 60-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                          ))}    
                         </div>
                     ))}
                 </div>
                 <div className="column7">
                     {board.map((row, rowIndex) => (
                         <div key={rowIndex+61} className="cell-sal">
-                            {rowIndex+61}
+                           {playerNames.map((count, index) => (
+                                <div>
+                                    {positions[index] === 63 || positions[index] === 66 ? LadderSnakeMove(positions[index],index) : rowIndex+61 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                            ))}
                         </div>
                     ))}
                 </div>
                 <div className="column8">
                     {board.map((row, rowIndex) => (
                         <div key={80-rowIndex} className="cell-sal">
-                            {80-rowIndex}
+                             {playerNames.map((count, index) => (
+                                <div>
+                                    {positions[index] === 78 ? LadderSnakeMove(78,index) : 80-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                             ))}
                         </div>
                     ))}
                 </div>
                 <div className="column9">
                     {board.map((row, rowIndex) => (
                         <div key={rowIndex+81} className="cell-sal">
-                            {rowIndex+81}
+                         {playerNames.map((count, index) => (
+                                <div>
+                                    {rowIndex+81 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                         ))}
                         </div>
                     ))}
                 </div>
                 <div className="column10">
                     {board.map((row, rowIndex) => (
                         <div key={100-rowIndex} className="cell-sal">
-                            {100-rowIndex}
+                             {playerNames.map((count, index) => (
+                                <div>
+                                    {positions[index] === 96 ? LadderSnakeMove(96,index) : 100-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                </div>
+                             ))}
                         </div>
                     ))}
                 </div>

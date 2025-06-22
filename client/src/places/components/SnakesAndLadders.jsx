@@ -11,7 +11,9 @@ function SnakesAndLadders () {
     const [diceValue, setDiceValue] = useState(0);
     const [positions, setPositions] = useState([null]);
     const [currentTurnNum, setCurrentTurnNum] = useState(0);
+    const [msg, setMsg] = useState("");
 
+    let gamelogFlag = false;
     let sixFlag = false;
 
     const players = {
@@ -90,14 +92,25 @@ function SnakesAndLadders () {
 
     const Dice = () => {
         return (
-            <div>
-                <label>{playerNames[currentTurnNum]}'s {symbols[currentTurnNum]} Turn to Roll</label>
-                <button className="button-settings" onClick={() => rollDice(playerNames[currentTurnNum], sixFlag, currentTurnNum)}> Roll Dice :  {diceValue}</button> 
-                <br/>
-                {Array.from({length:numPlayers}).map((count,index) => (
-                    <div>{playerNames[index]} Position {positions[index]}</div>
-                 ))}
-
+            <div classname="game-buttons">
+                <button className="button-settings" onClick={() => rollDice(playerNames[currentTurnNum], sixFlag, currentTurnNum)}> Roll Dice</button> 
+                <div className="game-log-holder">
+                    <h5> Game Log: </h5>
+                        <p>It's {playerNames[currentTurnNum]}'s {symbols[currentTurnNum]} Turn</p>
+                        {currentTurnNum === 0 ? <p>{playerNames[1]} {symbols[currentTurnNum]} Rolled a {diceValue}</p> : 
+                        <p>{playerNames[0]} {symbols[currentTurnNum]} Rolled a {diceValue}</p>}
+                        {Array.from({length:numPlayers}).map((count,index) => (
+                        <div className="game-log-player-posiions-holder">
+                            <u>{symbols[index]} {playerNames[index]} {symbols[index]}</u>
+                            <br/>
+                            <i>Position: {positions[index]}</i>
+                            <br/>
+                            <i>Moves Neeed to Win: {(100 - positions[index])} </i>
+                            <br/>
+                        </div>
+                    ))}
+                    <div className="game-log-alert"><br/>{msg}</div>
+                </div>
             </div>
         )
     }
@@ -147,77 +160,78 @@ function SnakesAndLadders () {
     }
 
     const LadderSnakeMove = (cellNum, player) => {
+        gamelogFlag = true;
             if (cellNum === 7) {
                 const newPositions = [...positions];
                 newPositions[player] = 36;
                 setPositions(newPositions);
-                alert(playerNames[player] + " moved up the ladder to 36");
+                setMsg(playerNames[player] + " moved up the ladder to 36");
             }
             if (cellNum === 21) {
                 const newPositions = [...positions];
                 newPositions[player] = 58;
                 setPositions(newPositions);
-                alert(playerNames[player] + " moved up the ladder to 58");
+                setMsg(playerNames[player] + " moved up the ladder to 58");
             }            
             if (cellNum === 31) {
                 const newPositions = [...positions];
                 newPositions[player] = 51;
                 setPositions(newPositions);
-                alert(playerNames[player] + " moved up the ladder to 51");
+                setMsg(playerNames[player] + " moved up the ladder to 51");
             }
             if (cellNum === 33) {
                 const newPositions = [...positions];
                 newPositions[player] = 5;
                 setPositions(newPositions);
-                alert(playerNames[player] + " eaten by a snake to 5");
+                setMsg(playerNames[player] + " eaten by a snake to 5");
             }           
             if (cellNum === 34) {
                 const newPositions = [...positions];
                 newPositions[player] = 84;
                 setPositions(newPositions);
-                alert(playerNames[player] + " moved up the ladder to 84");
+                setMsg(playerNames[player] + " moved up the ladder to 84");
             }
             if (cellNum === 43) {
                 const newPositions = [...positions];
                 newPositions[player] = 24;
                 setPositions(newPositions);
-                alert(playerNames[player] + " eaten by a snake to 24");
+                setMsg(playerNames[player] + " eaten by a snake to 24");
             }
             if (cellNum === 54) {
                 const newPositions = [...positions];
                 newPositions[player] = 89;
                 setPositions(newPositions);
-                alert(playerNames[player] + " moved up the ladder to 89");
+                setMsg(playerNames[player] + " moved up the ladder to 89");
             }
             if (cellNum === 56) {
                 const newPositions = [...positions];
                 newPositions[player] = 20;
                 setPositions(newPositions);
-                alert(playerNames[player] + " eaten by a snake to 20");
+                setMsg(playerNames[player] + " eaten by a snake to 20");
             }
             if (cellNum === 63) {
                 const newPositions = [...positions];
                 newPositions[player] = 82;
                 setPositions(newPositions);
-                alert(playerNames[player] + " moved up the ladder to 82");
+                setMsg(playerNames[player] + " moved up the ladder to 82");
             }
             if (cellNum === 66) {
                 const newPositions = [...positions];
                 newPositions[player] = 12;
                 setPositions(newPositions);
-                alert(playerNames[player] + " eaten by a snake to 12");
+                setMsg(playerNames[player] + " eaten by a snake to 12");
             }
             if (cellNum === 78) {
                 const newPositions = [...positions];
                 newPositions[player] = 59;
                 setPositions(newPositions);
-                alert(playerNames[player] + " eaten by a snake to 59");
+                setMsg(playerNames[player] + " eaten by a snake to 59");
             }
             if (cellNum === 96) {
                 const newPositions = [...positions];
                 newPositions[player] = 72;
                 setPositions(newPositions);
-                alert(playerNames[player] + " eaten by a snake to 72");
+                setMsg(playerNames[player] + " eaten by a snake to 72");
             }                  
     }
 
@@ -228,6 +242,7 @@ function SnakesAndLadders () {
                 <button className="button-settings" onClick={() => validateGameSettings()}>Start Game</button>
                 {toggleSettings && <GameSettings/>}
                 {toggleDice && <Dice/>}
+                {msg && gamelogFlag}
                 
             </div>
             <img className="image-board" src="/snakesladdersboard.jpg" alt="Board Game"/>

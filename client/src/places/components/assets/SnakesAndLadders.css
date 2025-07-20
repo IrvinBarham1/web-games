@@ -6,7 +6,7 @@
 
 .board-container {
   transform: rotate(270deg);
-  transform-origin: center center; /* Adjust origin as needed */
+  transform-origin: center center;
 }
 
 .board-container > .column1 >  .cell-sal,
@@ -295,7 +295,7 @@
 }
 .game-log-holder {
   width: 200px;
-  max-height: fit-content; /* or whatever fits in your design */
+  max-height: fit-content;
   overflow-y: auto;
   background-color: #f8f9f8;
   border-radius: 6px;

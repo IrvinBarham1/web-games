@@ -11,25 +11,18 @@ function SnakesAndLadders () {
     const [diceValue, setDiceValue] = useState(0);
     const [positions, setPositions] = useState([null]);
     const [currentTurnNum, setCurrentTurnNum] = useState(0);
-    const [msg, setMsg] = useState("");
+    const [msg, setMsg] = useState(""); 
+    const [stats, setStats] = useState([null]);
 
     let gamelogFlag = false;
     let sixFlag = false;
 
-    const players = {
-        num: numPlayers,
-        name: playerNames,
-        symbol: symbols,
-        position: positions
-    }
-
     const hideGameSettings = () => {
         setToggleSettings(!toggleSettings);
-
     }
 
     const GameSettings = () => (
-        <div>
+        <div className="game-setting-fields">
             <p>Game Settings</p>
             <label>Players</label>
             <input 
@@ -45,7 +38,7 @@ function SnakesAndLadders () {
 
             {Array.from({length:numPlayers}).map((count,index) => (
                 <ul>
-                    <li key={index}> Name: <b>{playerNames[index]}</b> Symbol: {symbols[index]}
+                    <li key={index}> Name: {playerNames[index]} Symbol: {symbols[index]}
                         <input
                          maxLength="10" 
                          placeholder="Set a Name"
@@ -71,7 +64,6 @@ function SnakesAndLadders () {
                     </li>
                 </ul>
             ))}
-            <p>Players: {numPlayers} and Names: {playerNames} and {symbols}</p>
         </div>
     )
 
@@ -83,6 +75,7 @@ function SnakesAndLadders () {
             hideDice();
             //create positions for players after settings are validated
             setPositions(Array.from({length:numPlayers}).fill(0));
+            setStats(Array.from({length:numPlayers}).fill(playerNames + "Snakes Eaten By"));
         }
     }
     
@@ -93,9 +86,11 @@ function SnakesAndLadders () {
     const Dice = () => {
         return (
             <div classname="game-buttons">
-                <button className="button-settings" onClick={() => rollDice(playerNames[currentTurnNum], sixFlag, currentTurnNum)}> Roll Dice</button> 
+                <div className="button-settings">
+                    <button className="dice-roll" onClick={() => rollDice(playerNames[currentTurnNum], sixFlag, currentTurnNum)}>🎲 Roll Dice 🎲</button>
+                </div> 
                 <div className="game-log-holder">
-                    <h5> Game Log: </h5>
+                    <h5 className="game-log-title"> 📜 Game Log 🕹️</h5>
                         <p>It's {playerNames[currentTurnNum]}'s {symbols[currentTurnNum]} Turn</p>
                         {currentTurnNum === 0 ? <p>{playerNames[1]} {symbols[currentTurnNum]} Rolled a {diceValue}</p> : 
                         <p>{playerNames[0]} {symbols[currentTurnNum]} Rolled a {diceValue}</p>}
@@ -110,6 +105,7 @@ function SnakesAndLadders () {
                         </div>
                     ))}
                     <div className="game-log-alert"><br/>{msg}</div>
+                    <div className="game-log-stats"><br/>{stats}</div>
                 </div>
             </div>
         )
@@ -160,6 +156,7 @@ function SnakesAndLadders () {
     }
 
     const LadderSnakeMove = (cellNum, player) => {
+        setStats(Array.from({length:numPlayers}).fill("Snakes Eaten By: "));
         gamelogFlag = true;
             if (cellNum === 7) {
                 const newPositions = [...positions];
@@ -239,127 +236,129 @@ function SnakesAndLadders () {
         <div className="game-container">
             <h1 className="game-name">Snakes and Ladders</h1>
             <div className="game-container-right">
-                <button className="button-settings" onClick={() => validateGameSettings()}>Start Game</button>
-                {toggleSettings && <GameSettings/>}
-                {toggleDice && <Dice/>}
+                <div className="button-settings-container">
+                    <button className="button-settings" onClick={() => validateGameSettings()}>Start Game</button>
+                    {toggleSettings && <GameSettings/>}
+                    {toggleDice && <Dice/>}
+                </div>
                 {msg && gamelogFlag}
-                
+                {stats && gamelogFlag}
             </div>
-            <img className="image-board" src="/snakesladdersboard.jpg" alt="Board Game"/>
-            <div className="board-container">
-                <div className="column1">
-                    {board.map((row, rowIndex) => (
-                        <div key={rowIndex+1} className="cell-sal">
+                <img className="image-board" src="/snakesladdersboard.jpg" alt="Board"/>
+                <div className="board-container">
+                    <div className="column1">
+                        {board.map((row, rowIndex) => (
+                            <div key={rowIndex+1} className="cell-sal">
+                                {playerNames.map((count, index) => (
+                                    <div>
+                                        {positions[index] === 7 ? LadderSnakeMove(7,index) : rowIndex+1 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
+                                ))}
+                            
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column2">
+                        {board.map((row, rowIndex) => (
+                            <div key={20-rowIndex} className="cell-sal">
+                                {playerNames.map((count, index) => (
+                                    <div>
+                                        {20-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column3">
+                        {board.map((row, rowIndex) => (
+                            <div key={rowIndex+21} className="cell-sal">
+                                {playerNames.map((count, index) => (
+                                    <div>
+                                        {positions[index] === 21 ? LadderSnakeMove(21,index) : rowIndex+21 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column4">
+                        {board.map((row, rowIndex) => (
+                            <div key={40-rowIndex} className="cell-sal">
+                                {playerNames.map((count, index) => (
+                                    <div>
+                                        {positions[index] === 31 || positions[index] === 33 || positions[index] === 34 ? LadderSnakeMove(positions[index] ,index) : 
+                                        40-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column5">
+                        {board.map((row, rowIndex) => (
+                            <div key={rowIndex+41} className="cell-sal">
+                                {playerNames.map((count, index) => (
+                                    <div>
+                                        {positions[index] === 43 ? LadderSnakeMove(43,index) : rowIndex+41 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column6">
+                        {board.map((row, rowIndex) => (
+                            <div key={60-rowIndex} className="cell-sal">
                             {playerNames.map((count, index) => (
-                                <div>
-                                    {positions[index] === 7 ? LadderSnakeMove(7,index) : rowIndex+1 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
-                            ))}
-                           
-                        </div>
-                    ))}
-                </div>
-                <div className="column2">
-                    {board.map((row, rowIndex) => (
-                        <div key={20-rowIndex} className="cell-sal">
+                                    <div>
+                                        {positions[index] === 54 || positions[index] === 56 ? LadderSnakeMove(positions[index],index) : 60-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
+                            ))}    
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column7">
+                        {board.map((row, rowIndex) => (
+                            <div key={rowIndex+61} className="cell-sal">
                             {playerNames.map((count, index) => (
-                                <div>
-                                    {20-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-                <div className="column3">
-                    {board.map((row, rowIndex) => (
-                        <div key={rowIndex+21} className="cell-sal">
+                                    <div>
+                                        {positions[index] === 63 || positions[index] === 66 ? LadderSnakeMove(positions[index],index) : rowIndex+61 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column8">
+                        {board.map((row, rowIndex) => (
+                            <div key={80-rowIndex} className="cell-sal">
+                                {playerNames.map((count, index) => (
+                                    <div>
+                                        {positions[index] === 78 ? LadderSnakeMove(78,index) : 80-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column9">
+                        {board.map((row, rowIndex) => (
+                            <div key={rowIndex+81} className="cell-sal">
                             {playerNames.map((count, index) => (
-                                <div>
-                                    {positions[index] === 21 ? LadderSnakeMove(21,index) : rowIndex+21 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
+                                    <div>
+                                        {rowIndex+81 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
                             ))}
-                        </div>
-                    ))}
+                            </div>
+                        ))}
+                    </div>
+                    <div className="column10">
+                        {board.map((row, rowIndex) => (
+                            <div key={100-rowIndex} className="cell-sal">
+                                {playerNames.map((count, index) => (
+                                    <div>
+                                        {positions[index] === 96 ? LadderSnakeMove(96,index) : 100-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-                <div className="column4">
-                    {board.map((row, rowIndex) => (
-                        <div key={40-rowIndex} className="cell-sal">
-                             {playerNames.map((count, index) => (
-                                <div>
-                                    {positions[index] === 31 || positions[index] === 33 || positions[index] === 34 ? LadderSnakeMove(positions[index] ,index) : 
-                                    40-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
-                             ))}
-                        </div>
-                    ))}
-                </div>
-                <div className="column5">
-                    {board.map((row, rowIndex) => (
-                        <div key={rowIndex+41} className="cell-sal">
-                             {playerNames.map((count, index) => (
-                                <div>
-                                    {positions[index] === 43 ? LadderSnakeMove(43,index) : rowIndex+41 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
-                             ))}
-                        </div>
-                    ))}
-                </div>
-                <div className="column6">
-                    {board.map((row, rowIndex) => (
-                        <div key={60-rowIndex} className="cell-sal">
-                          {playerNames.map((count, index) => (
-                                <div>
-                                    {positions[index] === 54 || positions[index] === 56 ? LadderSnakeMove(positions[index],index) : 60-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
-                          ))}    
-                        </div>
-                    ))}
-                </div>
-                <div className="column7">
-                    {board.map((row, rowIndex) => (
-                        <div key={rowIndex+61} className="cell-sal">
-                           {playerNames.map((count, index) => (
-                                <div>
-                                    {positions[index] === 63 || positions[index] === 66 ? LadderSnakeMove(positions[index],index) : rowIndex+61 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-                <div className="column8">
-                    {board.map((row, rowIndex) => (
-                        <div key={80-rowIndex} className="cell-sal">
-                             {playerNames.map((count, index) => (
-                                <div>
-                                    {positions[index] === 78 ? LadderSnakeMove(78,index) : 80-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
-                             ))}
-                        </div>
-                    ))}
-                </div>
-                <div className="column9">
-                    {board.map((row, rowIndex) => (
-                        <div key={rowIndex+81} className="cell-sal">
-                         {playerNames.map((count, index) => (
-                                <div>
-                                    {rowIndex+81 === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
-                         ))}
-                        </div>
-                    ))}
-                </div>
-                <div className="column10">
-                    {board.map((row, rowIndex) => (
-                        <div key={100-rowIndex} className="cell-sal">
-                             {playerNames.map((count, index) => (
-                                <div>
-                                    {positions[index] === 96 ? LadderSnakeMove(96,index) : 100-rowIndex === positions[index] && <span className="gamePiece-cell">{symbols[index]}</span>}
-                                </div>
-                             ))}
-                        </div>
-                    ))}
-                </div>
-            </div>
         </div>
     )
 }

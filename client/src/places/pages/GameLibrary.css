@@ -1,20 +1,51 @@
 .games-list {
-    display: grid;
-    position: fixed;
-    width: fit-content;
-    height: fit-content;
-    background-color: bisque;
+  position: fixed;
+  top: 180px;
+  left: 20px;
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(to right, #ffffff, #fff8ee);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  width: fit-content;
+  max-height: 90vh;
+  overflow-y: auto;
+  font-family: 'Segoe UI', sans-serif;
 }
 .game-names {
-    position: relative;
-    width: auto;
-    height: fit-content;
-    justify-self: left;
-    font-size: 1rem;
-    padding: 10px 15px;
+  position: relative;
+  font-size: .80rem;
+  font-weight: 500;
+  color: #333;
+  background-color: #f0f0f0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  display: inline-block;
+  margin-bottom: 8px;
+  font-family: 'Segoe UI', sans-serif;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  width: fit-content;
 }
 
-.page-name{
-    position: relative;
-    display: block;
+.game-names:hover {
+  background-color: #e0e0e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.page-name {
+  position: relative;
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2c2c2c;
+  margin-bottom: 16px;
+  padding-bottom: 6px;
+  padding-left: 6px;
+  border-bottom: 2px solid #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+  letter-spacing: 0.3px;
 }

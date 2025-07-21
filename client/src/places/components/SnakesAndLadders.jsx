@@ -162,7 +162,6 @@ function SnakesAndLadders () {
     }
 
     const LadderSnakeMove = (cellNum, player) => {
-        console.log("Snake check triggered for player", player, "cellNum:", cellNum);
         gamelogFlag = true;
             if (cellNum === 7) {
                 const newPositions = [...positions];

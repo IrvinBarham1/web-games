@@ -1,0 +1,68 @@
+.connect-four-container {
+  text-align: center;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-holder {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 20px;
+  position: relative;
+}
+
+.board {
+  display: grid;
+  grid-template-rows: repeat(6, 80px);
+  gap: 4px;
+  background-color: #5484c2;
+  padding: 10px;
+  border-radius: 8px;
+  width: fit-content;
+  margin-left: 300px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(7, 80px);
+  gap: 0px;
+}
+
+.cell-connectFour {
+  width: 60px;
+  height: 60px;
+  background-color: #f8f8f8cb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.cell-connectFour:hover {
+  transform: scale(1.1);
+}
+
+.disc {
+  font-size: 45px;
+}
+
+.game-info {
+  background: #f9f9f9;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  text-align: left;
+  align-self: flex-start;
+}
+
+.game-info p{ 
+    font-weight: 500;
+    font-size: 16px;
+}

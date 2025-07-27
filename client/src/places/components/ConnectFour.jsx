@@ -19,10 +19,12 @@ const ConnectFour = () => {
         for(let row = ROWS - 1; row >= 3; row--) { 
             if(board[row][col] === '🔴' && board[row-1][col] === '🔴' &&
                 board[row-2][col] === '🔴' && board[row-3][col] === '🔴'){
+
                 RedFour = true;
             }
             if(board[row][col] === '🟡' && board[row-1][col] === '🟡' &&
                 board[row-2][col] === '🟡' && board[row-3][col] === '🟡'){
+
                 YellowFour = true;
             }
         }
@@ -32,15 +34,47 @@ const ConnectFour = () => {
         for(let col = 0; col <= 3; col++) { 
             if(board[row][col] === '🔴' && board[row][col+1] === '🔴' &&
                 board[row][col+2] === '🔴' && board[row][col+3] === '🔴'){
+
                 RedFour = true;
             }
             if(board[row][col] === '🟡' && board[row][col+1] === '🟡' &&
                 board[row][col+2] === '🟡' && board[row][col+3] === '🟡'){
+
                 YellowFour = true;
             }
         }
     }
-    //check diagonal wins
+    //check diagonal wins decline
+    for (let col = 0; col <= 3; col++) {
+        for (let row = 0; row <= 2; row++) {
+            if(board[row][col] === '🔴' && board[row+1][col+1] === '🔴' &&
+                board[row+2][col+2] === '🔴' && board[row+3][col+3] === '🔴'){
+
+                RedFour = true;
+            }
+            if(board[row][col] === '🟡' && board[row+1][col+1] === '🟡' &&
+                board[row+2][col+2] === '🟡' && board[row+3][col+3] === '🟡'){
+
+                YellowFour = true;
+            }     
+        }
+    }
+    //check diagonal wins incline
+    for (let col = 0; col <= 3; col++) {
+        for (let row = ROWS -1; row >= 2; row--) {
+            if(board[row][col] === '🔴' && board[row-1][col+1] === '🔴' &&
+                board[row-2][col+2] === '🔴' && board[row-3][col+3] === '🔴'){
+
+                RedFour = true;
+            }
+            if(board[row][col] === '🟡' && board[row-1][col+1] === '🟡' &&
+                board[row-2][col+2] === '🟡' && board[row-3][col+3] === '🟡'){
+
+                YellowFour = true;
+            }    
+        }
+    }
+
     if (RedFour)
         setWinner('🔴');
     else if (YellowFour)
@@ -48,7 +82,7 @@ const ConnectFour = () => {
     else
         return null;
   };
-
+    
   const handleColumnClick = (col) => {
     if (winner) return;
 

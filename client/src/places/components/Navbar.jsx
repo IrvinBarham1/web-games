@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import "../pages/Navbar.css";
-
+import { motion } from "framer-motion";
 
 const Navbar = () => {
 
@@ -8,7 +8,9 @@ const Navbar = () => {
         <div className= 'nav-container'>
             <div className = 'nav-left'>
                 <img className="nav-image-container" src="./logo.png" alt="my logo"/>
-                <h1>Irvin's Games</h1>
+                <motion.h1 className="web-games-title" 
+                animate={{ scale: 1, rotate: [5, 0, -5, 5] }}
+                transition={{ repeat: Infinity, duration: 5 }}>Irvin's Games </motion.h1>
             </div>
                 <ul className ="nav-links">
                     <li>

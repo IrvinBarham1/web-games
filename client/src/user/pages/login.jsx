@@ -21,10 +21,6 @@ const Login = () => {
 
     },[])
 
-    useEffect(() => {
-        console.log("DynamoDB USERS:", authUsers, authPass);
-    }, [authUsers,authPass]);
-
     const Authorize = (event) => {
         event.preventDefault();
         if(authUsers.includes(userName) && authPass[authUsers.indexOf(userName)].includes(password)){

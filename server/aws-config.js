@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
-const dotenv = require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../client/.env') });
 
 console.log('AWS_REGION:', process.env.AWS_REGION);
 console.log('Has Access Key:', !!process.env.ACCESS_KEY);

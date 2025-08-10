@@ -5,25 +5,30 @@ import "./login.css"
 
 const Login = () => {
     const navigate = useNavigate();
-    const [userName, setUserName] = useState(null);
-    const [password, setPassword] = useState(null);
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
     const [authUsers, setAuthUsers] = useState([]);
     const [authPass, setAuthPass] = useState([]);
-    const [loginAlert, setLoginAlert] = useState(null);
+    const [loginAlert, setLoginAlert] = useState('');
 
     useEffect(() => {
-        fetch('/authUsers')
+         fetch('/authLogins')
         .then(response => response.json())
-        .then(data => {setAuthUsers(data.users)})
-        fetch('/authPass')
-        .then(response => response.json())
-        .then(data => {setAuthPass(data.passwords)})
+        .then(data => {
+            setAuthUsers(data.Items?.map(i => i.account?.accountName) ?? ["error fetching usernames"])
+            setAuthPass(data.Items?.map(i => i.account?.accountKey) ?? ["error fetching passwords"])
+        })
+
     },[])
+
+    useEffect(() => {
+        console.log("DynamoDB USERS:", authUsers, authPass);
+    }, [authUsers,authPass]);
 
     const Authorize = (event) => {
         event.preventDefault();
-        if(authUsers.includes(userName) && authPass.includes(password)){
-            setLoginAlert("Validating account in S3 Database..."); //Placeholder for database validation
+        if(authUsers.includes(userName) && authPass[authUsers.indexOf(userName)].includes(password)){
+            setLoginAlert("Validating account in DynamoDB..."); 
             setTimeout(() => {
                 navigate('/home', {replace: true});
             }, 3000);
@@ -47,8 +52,8 @@ const Login = () => {
                 <label>Password:</label>
                 <input type="password" name="password" value={password} onChange={pass => setPassword(pass.target.value)} required/>
                 <br/>
-                <button class="login-button" type="submit">Login</button>
-                <p class="login-alert">{loginAlert}</p>
+                <button className="login-button" type="submit">Login</button>
+                <p className="login-alert">{loginAlert}</p>
             </form>
         </div>
     )

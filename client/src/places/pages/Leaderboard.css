@@ -1,0 +1,59 @@
+.sections {
+  display: flex;           
+  justify-content: space-between; 
+  gap: 30px;                
+  margin-top: 20px;
+  margin: 25px;
+}
+
+.section-left,
+.section-right {
+  flex: 1;                  
+  background: linear-gradient(to right, #ffffff, #fff8ee);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.global-title,
+.stats-title {
+  text-align: center;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-weight: 800;
+  color: #5483c2;
+  letter-spacing: 1px;
+
+  animation: glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from {
+    text-shadow: 0px 0px 0px rgb(132, 173, 219);
+  }
+  to {
+    text-shadow: 0px 0px 15px rgba(7, 153, 250, 0.884);
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+
+}
+
+.table th,
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.table th {
+  background: #f5f5f5;
+  font-weight: bold;
+  color:rgba(7, 153, 250, 0.884);
+}
+
+.table tr:hover {
+  background: rgba(7, 153, 250, 0.158);
+}

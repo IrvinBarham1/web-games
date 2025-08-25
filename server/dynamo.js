@@ -18,14 +18,33 @@ async function addAccounts(data) {
 }
 
 async function fetchAccounts () {
-    const params = {TableName: TABLE}
+    const params = {
+        TableName: TABLE,
+        ProjectionExpression: "account.accountName, account.accountKey"
+    }
         try {
         const data = await dynamodb.scan(params).promise();
-        return { success: true, data};
+        return { success: true, data };
     }
     catch (error) {
         console.error('fetch accounts error: ', error);
         return { success: false, message: 'Error fetching account' };
     }
 }
-module.exports =  { addAccounts, fetchAccounts };
+
+async function fetchLeaderboard () {
+    const params = {
+        TableName: TABLE,
+        ProjectionExpression: "account.accountName, account.gamesWon, account.gamesLost, account.#r",
+        ExpressionAttributeNames: { "#r": "rank"}
+    }
+    try {
+        const data = await dynamodb.scan(params).promise();
+        return { success: true, data }
+    }
+    catch (error){
+        console.error('fetch leaderboard error: ', error);
+        return { success: false, message: 'Error fetching leeaderboard data' };
+    }
+}
+module.exports =  { addAccounts, fetchLeaderboard, fetchAccounts };

@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import "./Leaderboard.css";
 
 const Leaderboard = () => {
-    const [stats, setStats] = useState([]);
+    const [stats, setStats] = useState([])
+    const [selectedGamer, setSelectedGamer] = useState({})
 
         useEffect(() => {
              fetch('/leaderboard')
@@ -42,7 +43,7 @@ const Leaderboard = () => {
                             </thead>
                             <tbody>
                                 {stats.map((s,index) => (
-                                    <tr key={s.username}>
+                                    <tr key={s.username} onClick={() => setSelectedGamer(s)}>
                                         <td>{index + 1}</td>
                                         <td>{s.username}</td>
                                         <td>{s.wins - s.losses}</td>
@@ -53,16 +54,16 @@ const Leaderboard = () => {
                 </div>
                 <div className="section-right">
                     <h2 className ="stats-title">Gamer Stats</h2>
-                    <h4>Selected Gamer: UsualMaster1456</h4>
+                    <h4>Selected Gamer: {selectedGamer.username}</h4>
                     <table className="table">
                             <tbody>
                                 <tr>
                                     <td>Games Won</td>
-                                    <td>13</td>
+                                    <td>{selectedGamer.wins}</td>
                                 </tr>          
                                 <tr>
                                     <td>Games Lost</td>
-                                    <td>15</td>
+                                    <td>{selectedGamer.losses}</td>
                                 </tr>
                                   <tr>
                                     <td>Best Game</td>

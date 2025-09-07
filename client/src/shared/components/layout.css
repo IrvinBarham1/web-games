@@ -1,0 +1,23 @@
+/* Page width + padding */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+/* 2D layouts */
+.grid            { display:grid; gap: 16px; }
+.grid-2          { grid-template-columns: 1fr 1fr; }
+.grid-3          { grid-template-columns: repeat(3, 1fr); }
+.grid-4          { grid-template-columns: repeat(4, 1fr); }
+/* Responsive auto-fit cards */
+.grid-cards      { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; }
+
+/* Sidebar + main */
+.grid-sidebar    { display:grid; grid-template-columns: 260px 1fr; gap: 16px; }
+@media (max-width: 980px){ .grid-sidebar { grid-template-columns: 1fr; } }
+
+/* 1D layouts */
+.row             { display:flex; gap:12px; align-items:center; }
+.row-between     { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.col             { display:flex; flex-direction:column; gap:12px; }
+
+/* Quick helpers */
+.center          { display:grid; place-items:center; }
+.full            { width:100%; }

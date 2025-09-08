@@ -109,7 +109,7 @@ const ConnectFour = () => {
         <div className="game-holder">
             <div className="board">
                 {board.map((row, rowIndex) => (
-                <div key={rowIndex} className="row">
+                <div key={rowIndex} className="board-row">
                     {row.map((cell, colIndex) => (
                     <div key={colIndex} className="cell-connectFour" onClick={() => handleColumnClick(colIndex)}>
                         <div className="disc">{cell}</div>  

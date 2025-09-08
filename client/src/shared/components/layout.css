@@ -21,3 +21,6 @@
 /* Quick helpers */
 .center          { display:grid; place-items:center; }
 .full            { width:100%; }
+
+/*Game Components*/
+

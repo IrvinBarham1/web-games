@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import TicTacToe from "../components/TicTacToe";
 import SnakesAndLadders from "../components/SnakesAndLadders";
 import ConnectFour from "../components/ConnectFour";
+import AiTrivia from "../components/AiTrivia";
 import "./GameLibrary.css";
 import "../../shared/components/layout.css";
 import React, { useState } from "react";
@@ -12,7 +13,7 @@ const GameLibrary = () => {
     { id: "TicTacToe", title: "Tic-Tac-Toe", component: <TicTacToe /> },
     { id: "SnakesAndLadders", title: "Snakes and Ladders", component: <SnakesAndLadders /> },
     { id: "ConnectFour", title: "Connect Four", component: <ConnectFour /> },
-    { id: "AI_Trivia", title: "Trivia with AI", component: null },
+    { id: "AI_Trivia", title: "Trivia with AI", component: <AiTrivia /> },
     { id: "empty2", title: "Coming Soon", component: null },
     { id: "empty3", title: "Coming Soon", component: null },
   ];

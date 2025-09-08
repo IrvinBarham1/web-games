@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./assets/SnakesAndLadders.css";
+import "./assets/Game.css";
 
 function SnakesAndLadders () {
     const [board, setBoard] = useState(Array.from({ length: 10 }, () => Array(10).fill(0)));

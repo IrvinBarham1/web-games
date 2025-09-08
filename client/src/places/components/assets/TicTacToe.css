@@ -4,12 +4,6 @@
     color: black;
 }
 
-.game-name {
-    font-size: 26px;
-    justify-content: center;
-    display: flex;
-}
-
 .game-board {
     display: grid;
     grid-template-columns: repeat(3, 100px);

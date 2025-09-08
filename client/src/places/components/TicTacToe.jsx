@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import "./assets/TicTacToe.css";
+import "./assets/Game.css";
 
 function TicTacToe () {
     const [selectedCell_1, setSelectedCell_1] = useState(null);

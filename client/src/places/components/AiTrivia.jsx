@@ -20,9 +20,20 @@ const DIFFICULTY = [
 function AiTrivia () { 
 
     const [gameStarted, setGameStarted] = useState(false);
-    const [questionCategory, setQuestionCategory] = useState("");
-    const [questionDifficulty , setQuestionDifficulty] = useState("");
-    const [questionAi, setQuestionAi] = useState("NULL");
+    const [questionCategory, setQuestionCategory] = useState('');
+    const [questionDifficulty , setQuestionDifficulty] = useState('');
+    const [questionAi, setQuestionAi] = useState();
+    const [choicesAi, setChoicesAi] = useState([])
+    const [answerAi, setAnswerAi] = useState();
+    const [explainationAi, setExplanationAi] = useState();
+
+    // ---------------------------- Components ----------------------------
+
+    const StartButton = ( {onStart}) => (
+        <button id="startBtn" className="btn primary" onClick={onStart}>Start</button>
+    )
+
+    // ---------------------------- Functions ----------------------------
 
     const handleCategoryChange = (e) => {
         const value = e.target.value;
@@ -34,27 +45,53 @@ function AiTrivia () {
         const label = DIFFICULTY.find(d => d.value === value)?.label ?? "Any";
         setQuestionDifficulty(label);
   }
-    async function fetchQuestions() {
-        const res = await fetch('/questionsAi', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-            category: questionCategory,
-            difficulty: questionDifficulty
-            }),
-    });
-    const data = await res.json();
-    setQuestionAi(data.question);
+
+    const validateGameStart = () => {
+        if (questionDifficulty === '' && questionCategory === '') 
+            alert("Pleae Select a Difficulty and Category to Start the Game.");
+        else if (questionDifficulty === '') 
+            alert("Please Select a Difficulty");
+        else if (questionCategory === '')
+            alert("Pleaes Select a Category");
+        else {
+            setGameStarted(true);
+        }
     }
 
+    async function fetchQuestions() {
+        try {
+            const response = await fetch('/questionsAi', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ category: questionCategory, difficulty: questionDifficulty }) 
+            })
+
+            if (!response.ok) 
+                throw new Error('Network response was not ok');
+        
+            const data =  await response.json();
+            let parsedData = JSON.parse(data.response);
+            setQuestionAi(parsedData.question);
+            setAnswerAi(parsedData.answer);
+            setExplanationAi(parsedData.explanation);
+            let choices = parsedData.choices;
+            setChoicesAi([choices[0], choices[1], choices[2] , choices[3]])
+            
+            } 
+            catch(err) {
+            console.error('Chat response fetch error:', err);
+            setQuestionAi("Failed to load");
+            setGameStarted(false);
+            }
+        }
+    
     useEffect(() => {
-        if (gameStarted)
-        fetch('/questionsAi')
-        .then(response => response.json())
-        .then(data => {
-        setQuestionAi(data.text ?? ["error fetching questions"])
-        })
-    }, [gameStarted])
+        if (gameStarted && questionDifficulty && questionCategory) 
+            fetchQuestions();
+            
+    }, [gameStarted, questionDifficulty, questionCategory])
 
     return (
         <div className="trivia-page">
@@ -94,7 +131,7 @@ function AiTrivia () {
                     </label>
                 </div>
                 <div className="actions">
-                      {!gameStarted && <button id="startBtn" className="btn primary" onClick={() =>setGameStarted(true)}>Start</button>}
+                      {!gameStarted && <StartButton onStart={(validateGameStart)}/>}
                       <button id="resetBtn" className="btn ghost"  disabled={!gameStarted} onClick={() => setGameStarted(false)}>Reset</button>
                 </div>
                 </div>
@@ -124,8 +161,8 @@ function AiTrivia () {
                 {/* Question Card */}
                 <article className="question-card" aria-live="polite">
                     <div className="q-meta">
-                    <span id="qCategory" className="chip">Category</span>
-                    <span id="qDifficulty" className="chip">Medium</span>
+                    <span id="qCategory" className="chip">{questionCategory}</span>
+                    <span id="qDifficulty" className="chip">{questionDifficulty}</span>
                     </div>
                     <h2 id="questionText" className="question">
                         {!gameStarted ? "Press Start to begin!" : questionAi}
@@ -134,10 +171,10 @@ function AiTrivia () {
 
                     {gameStarted &&
                          <ul className="choices" role="listbox" aria-labelledby="questionText">
-                        <li><button className="choice-btn" data-choice="Option-A">Option A</button></li>
-                        <li><button className="choice-btn" data-choice="Option-B">Option B</button></li>
-                        <li><button className="choice-btn" data-choice="Option-C">Option C</button></li>
-                        <li><button className="choice-btn" data-choice="Option-D">Option D</button></li>
+                        <li><button className="choice-btn" data-choice="Option-A">{questionAi ? choicesAi[0] : "loading"}</button></li>
+                        <li><button className="choice-btn" data-choice="Option-B">{choicesAi[1]}</button></li>
+                        <li><button className="choice-btn" data-choice="Option-C">{choicesAi[2]}</button></li>
+                        <li><button className="choice-btn" data-choice="Option-D">{choicesAi[3]}</button></li>
                                 </ul>
                     }
 

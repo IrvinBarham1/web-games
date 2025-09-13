@@ -27,7 +27,8 @@
   border:none; border-radius:10px; padding:10px 14px;
   font-weight:700; text-decoration:none; display:inline-block;
 }
-.btn--ghost{ background:transparent; color:#fff; border:1px solid #fff; }
+.btn:Hover{ transform: translateY(-2px); box-shadow:0 6px 16px rgba(0,0,0,.08);}
+.btn--ghost{ background:transparent; border:1px solid #fff; }
 .btn--small{ padding:8px 10px; font-size: 14px; }
 
 .quick{

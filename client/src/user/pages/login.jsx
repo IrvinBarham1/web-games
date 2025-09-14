@@ -39,19 +39,22 @@ const Login = () => {
     }
 
     return(
-        <div className="login">
-            <form onSubmit={Authorize}>
-                <h1>Irvin's Web Games</h1>
-                <label>Username:</label>
-                <input type="text" name="userName" value={userName} onChange={user => setUserName(user.target.value)} required/>
-                <br/>
-                <label>Password:</label>
-                <input type="password" name="password" value={password} onChange={pass => setPassword(pass.target.value)} required/>
-                <br/>
-                <button className="login-button" type="submit">Login</button>
-                <p className="login-alert">{loginAlert}</p>
-            </form>
+        <div className="login-page">
+            <div className="login-card">
+                <form onSubmit={Authorize}>
+                    <h1 className="login-title">Irvin's Web Games</h1>
+                    <label>Username</label>
+                    <input type="text" name="userName" value={userName} onChange={user => setUserName(user.target.value)} required/>
+                    <br/>
+                    <label>Password</label>
+                    <input type="password" name="password" value={password} onChange={pass => setPassword(pass.target.value)} required/>
+                    <br/>
+                    <button className="login-button" type="submit">Login</button>
+                    <p className="login-alert">{loginAlert}</p>
+                </form>
+            </div>
         </div>
+        
     )
 }
 export default Login;

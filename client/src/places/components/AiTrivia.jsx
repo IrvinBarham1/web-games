@@ -22,14 +22,14 @@ function AiTrivia () {
     const [questionCategory, setQuestionCategory] = useState('');
     const [questionDifficulty , setQuestionDifficulty] = useState('');
     const [questionAi, setQuestionAi] = useState();
-    const [answerAi, setAnswerAi] = useState();
+    const [answerAi, setAnswerAi] = useState([]);
     const [explainationAi, setExplanationAi] = useState();
     const [choicesAi, setChoicesAi] = useState([]);
     const [userChoice, setUserChoice] = useState();
 
     // ---------------------------- Flags ----------------------------
     
-    const [phase, setPhase] = useState("loadingQuestion");  // "reset" || "pickingSettings" || ""start" || "loadingQuestion" || "readingQuestion" || "answeredQuestion"
+    const [phase, setPhase] = useState("pickingSettings");  // "reset" || "pickingSettings" || ""start" || "loadingQuestion" || "readingQuestion" || "answeredQuestion"
         
         const PickChoice = (choice) => {
             setChoicePicked(true);
@@ -100,13 +100,18 @@ function AiTrivia () {
         
             const data =  await response.json();
             let parsedData = JSON.parse(data.response);
-            setQuestionAi(parsedData.question);
             setAnswerAi(parsedData.answer);
             setExplanationAi(parsedData.explanation);
+
+            let questions = parsedData.question;
+            setQuestionAi(questions[0], questions[1], questions[2], questions[3], questions[4], questions[5], questions[6], questions[7], questions[8], questions[9]);
+
             let choices = parsedData.choices;
-            setChoicesAi([choices[0], choices[1], choices[2] , choices[3]])
+            setChoicesAi([choices[0], choices[1], choices[2] , choices[3]]);
+
             setResponseLoadedAi(true);
             setPhase("readingQuestion");
+            console.log(">>> " + questionAi);
 
             } 
             catch(err) {
@@ -120,13 +125,17 @@ function AiTrivia () {
     
     // Game Reset
         if (phase === "reset") {
-          //  setQuestionCategory('');
-           // setQuestionDifficulty('');
+            setQuestionCategory('');
+            setQuestionDifficulty('');
             setQuestionAi('');
             setAnswerAi('');
             setExplanationAi('');
             setChoicesAi('');
             setUserChoice('');
+        }
+
+        if (phase === "pickingSettings"){
+            
         }
 
     // Generate Question
@@ -135,7 +144,7 @@ function AiTrivia () {
         }
 
         if (phase === "readingQuestion") {
-
+            setGameStarted(true);
         }
         
     }, [phase])
@@ -146,37 +155,65 @@ function AiTrivia () {
                 <h1 className="game-name">🤖 AI Powered Trivia</h1>
 
                 <div className="game-toolbar">
-                <div className="selectors">
-                    <label className="field">
-                    <span>Category</span>
-                    <select id="categorySelect" className="select" value={questionCategory} onChange={handleCategoryChange}>
-                        {CATEGORIES.map(c => (<option key={c.value} value={c.value}>{c.label}</option>))}
-                    </select>
-                    </label>    
 
-                    <label className="field">
-                    <span>Difficulty</span>
-                    <select id="difficultySelect" className="select" value={questionDifficulty} 
-                    onChange={(e) => {
-                        setPhase("pickingSettings"); 
-                        handleDiffcultyChange(e);
-                    }}>
-                        {DIFFICULTY.map (d => (<option key={d.value} value={d.value}>{d.label}</option>))}
-                    </select>
-                    </label>
+                {phase === "reset" || phase === "pickingSettings" ? 
+                    <div className="selectors">
+                        <label className="field">
+                            <span>Category</span>
+                            <select id="categorySelect" className="select" value={questionCategory} onChange={handleCategoryChange}>
+                                {CATEGORIES.map(c => (<option key={c.value} value={c.value}>{c.label}</option>))}
+                            </select>
+                        </label>    
 
-                    <label className="field">
-                    <span>Questions</span>
-                    <input
-                        id="questionCount"
-                        className="input"
-                        type="number"
-                        min="1"
-                        max="25"
-                        defaultValue="10"
-                    />
-                    </label>
-                </div>
+                        <label className="field">
+                            <span>Difficulty</span>
+                            <select id="difficultySelect" className="select" value={questionDifficulty} 
+                            onChange={(e) => {
+                                setPhase("pickingSettings"); 
+                                handleDiffcultyChange(e);
+                            }}>
+                                {DIFFICULTY.map (d => (<option key={d.value} value={d.value}>{d.label}</option>))}
+                            </select>
+                        </label>
+
+                        <label className="field">
+                            <span>Questions</span>
+                            <input
+                                id="questionCount"
+                                className="input"
+                                type="number"
+                                min="1"
+                                max="25"
+                                defaultValue="10"
+                            />
+                        </label>
+                    </div>
+                : 
+                    <div className="selectors">
+                        <label className="field">
+                            <span>Category</span>
+                            <span className="select">{questionCategory}</span>
+                        </label>    
+
+                        <label className="field">
+                            <span>Difficulty</span>
+                            <span className="select">{questionDifficulty}</span>
+                        </label>
+                        
+                        <label className="field">
+                            <span>Questions</span>
+                            <input
+                                id="questionCount"
+                                className="input"
+                                type="number"
+                                min="1"
+                                max="25"
+                                defaultValue="10"
+                            />
+                        </label>
+                    </div>
+                }
+
                 <div className="actions">
                       {phase === "reset" || phase === "pickingSettings" && <StartButton onStart={(validateGameStart)}/>}
                       <button id="resetBtn" className="btn ghost"  disabled={!gameStarted} onClick={() => setPhase("reset")}>Reset</button>
@@ -215,7 +252,7 @@ function AiTrivia () {
                         {!gameStarted ? "Press Start to begin!" : questionAi}
                     </h2>
 
-                    {phase === "readingQuestion" && 
+                    {(phase === "readingQuestion" || phase === "answeredQuestion") && 
                         <div className="">
                             <ul className="choices" role="listbox" aria-labelledby="questionText">
                                 {phase === "answeredQuestion" ?
@@ -235,7 +272,7 @@ function AiTrivia () {
                                 }
                             </ul>
                              <div className="feedback" aria-live="assertive" id="answerFeedback">
-                                {choicePicked && (wrongChoice ? 
+                                {phase === "answeredQuestion" && (wrongChoice ? 
                                     <div className="wrong"> 
                                         <p className="wrong-text">
                                              ❌ {userChoice} is wrong. The correct answer was <span className="answer">{answerAi}</span>

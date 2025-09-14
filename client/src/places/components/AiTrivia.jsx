@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import './assets/AITrivia.css';
 
 const CATEGORIES = [
@@ -16,6 +16,7 @@ const DIFFICULTY = [
   { value: "medium", label: "Medium" },
   { value: "hard", label: "Hard" }
 ];
+const QUESTION_TIME_MS = 30_000;
 
 function AiTrivia () { 
 
@@ -26,6 +27,8 @@ function AiTrivia () {
     const [explainationAi, setExplanationAi] = useState();
     const [choicesAi, setChoicesAi] = useState([]);
     const [userChoice, setUserChoice] = useState();
+    const [timeLeftMs, setTimeLeftMs] = useState(QUESTION_TIME_MS);
+    const rafRef = useRef(null);
 
     // ---------------------------- Flags ----------------------------
     
@@ -103,8 +106,7 @@ function AiTrivia () {
             setAnswerAi(parsedData.answer);
             setExplanationAi(parsedData.explanation);
 
-            let questions = parsedData.question;
-            setQuestionAi(questions[0], questions[1], questions[2], questions[3], questions[4], questions[5], questions[6], questions[7], questions[8], questions[9]);
+            setQuestionAi(parsedData.question);
 
             let choices = parsedData.choices;
             setChoicesAi([choices[0], choices[1], choices[2] , choices[3]]);
@@ -120,6 +122,13 @@ function AiTrivia () {
             setGameStarted(false);
             }
         }
+    
+    function formatMMSS(ms) {
+        const total = Math.ceil(ms / 1000);
+        const m = Math.floor(total / 60).toString().padStart(2, "0");
+        const s = (total % 60).toString().padStart(2, "0");
+        return `${m}:${s}`;
+    }
 
     useEffect(() => {
     
@@ -143,8 +152,28 @@ function AiTrivia () {
             fetchQuestions();
         }
 
+         if (phase != "readingQuestion") {
+            if(rafRef.current)
+                cancelAnimationFrame(rafRef.current);
+        }
         if (phase === "readingQuestion") {
             setGameStarted(true);
+            setTimeLeftMs(QUESTION_TIME_MS);
+            const start = performance.now();
+
+            const tick = (now) => {
+                const elapsed = now - start;
+                const remain = Math.max(0, QUESTION_TIME_MS - elapsed);
+                setTimeLeftMs(remain);
+
+                if (remain > 0) 
+                    rafRef.current = requestAnimationFrame(tick);
+            }
+            rafRef.current = requestAnimationFrame(tick);
+            return () => {
+                if (rafRef.current)
+                    cancelAnimationFrame(rafRef.current);
+            }
         }
         
     }, [phase])
@@ -220,24 +249,28 @@ function AiTrivia () {
                 </div>
                 </div>
 
+                {phase != "reset" && phase != "pickingSettings" && 
                 <div className="statusbar" role="status" aria-live="polite">
-                <div className="status-item">
-                    <span className="label">Question</span>
-                    <span id="qIndex" className="value">0/0</span>
-                </div>
-                <div className="status-item">
-                    <span className="label">Score</span>
-                    <span id="score" className="value">0</span>
-                </div>
-                <div className="status-item timer">
-                    <span className="label">Time</span>
-                    <span id="timeLeft" className="value">00:30</span>
-                    <div className="timebar">
-                    <div id="timeFill" className="timefill" style={{ width: '100%' }} />
+                    <div className="status-item">
+                        <span className="label">Question</span>
+                        <span id="qIndex" className="value">0/0</span>
                     </div>
-                </div>
-                <div className="status-item ai-badge" title="AI features enabled">AI</div>
-                </div>
+                    <div className="status-item">
+                        <span className="label">Score</span>
+                        <span id="score" className="value">0</span>
+                    </div>
+                    {phase === "readingQuestion" && 
+                        <div className="status-item timer">
+                            <span className="label">Time</span>
+                            <span id="timeLeft" className="value">{formatMMSS(timeLeftMs)}</span>
+                            <div className="timebar">
+                            <div id="timeFill" className="timefill" style={{ width: `${(timeLeftMs / QUESTION_TIME_MS) * 100}%` }} />
+                            </div>
+                        </div>
+                    }
+                    <div className="status-item ai-badge" title="AI features enabled">AI</div>
+                    </div>
+                }
             </header>
 
             <main className="trivia-container">

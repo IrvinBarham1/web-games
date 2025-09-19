@@ -22,6 +22,7 @@ function AiTrivia () {
 
     const [questionCategory, setQuestionCategory] = useState('');
     const [questionDifficulty , setQuestionDifficulty] = useState('');
+    const [questionCount, setQuestionCount] = useState(0);
     const [questionAi, setQuestionAi] = useState();
     const [answerAi, setAnswerAi] = useState([]);
     const [explainationAi, setExplanationAi] = useState();
@@ -32,14 +33,14 @@ function AiTrivia () {
 
     // ---------------------------- Flags ----------------------------
     
-    const [phase, setPhase] = useState("pickingSettings");  // "reset" || "pickingSettings" || ""start" || "loadingQuestion" || "readingQuestion" || "answeredQuestion"
+    const [phase, setPhase] = useState("pickingSettings");  // "reset" || "pickingSettings" || "loadingQuestion" || "readingQuestion" || "answeredQuestion"
         
         const PickChoice = (choice) => {
             setChoicePicked(true);
             setUserChoice(choice);
             setPhase("answeredQuestion");
 
-            if(choice != answerAi)
+            if(choice !== answerAi)
                  setWrongChoice(true)
             else   
                  setWrongChoice(false)
@@ -56,7 +57,7 @@ function AiTrivia () {
                 alert("Please Select a Category");
             else {
                 setGameStarted(true);
-                setPhase("start");
+                setPhase("loadingQuestion");
             }
     }
 
@@ -95,13 +96,15 @@ function AiTrivia () {
             headers: {
             'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ category: questionCategory, difficulty: questionDifficulty }) 
+            body: JSON.stringify({ category: questionCategory, difficulty: questionDifficulty, count: questionCount }) 
             })
 
             if (!response.ok) 
                 throw new Error('Network response was not ok');
         
             const data =  await response.json();
+
+
             let parsedData = JSON.parse(data.response);
             setAnswerAi(parsedData.answer);
             setExplanationAi(parsedData.explanation);
@@ -148,11 +151,11 @@ function AiTrivia () {
         }
 
     // Generate Question
-        if (phase === "start") {
+        if (phase === "loadingQuestion") {
             fetchQuestions();
-        }
+       }
 
-         if (phase != "readingQuestion") {
+         if (phase !== "readingQuestion") {
             if(rafRef.current)
                 cancelAnimationFrame(rafRef.current);
         }
@@ -184,23 +187,25 @@ function AiTrivia () {
                 <h1 className="game-name">🤖 AI Powered Trivia</h1>
 
                 <div className="game-toolbar">
-
+                    
                 {phase === "reset" || phase === "pickingSettings" ? 
                     <div className="selectors">
                         <label className="field">
                             <span>Category</span>
                             <select id="categorySelect" className="select" value={questionCategory} onChange={handleCategoryChange}>
+                                <option value="" hidden>
+                                    {questionCategory ? questionCategory : "Select Category"}
+                                </option>
                                 {CATEGORIES.map(c => (<option key={c.value} value={c.value}>{c.label}</option>))}
                             </select>
                         </label>    
 
                         <label className="field">
                             <span>Difficulty</span>
-                            <select id="difficultySelect" className="select" value={questionDifficulty} 
-                            onChange={(e) => {
-                                setPhase("pickingSettings"); 
-                                handleDiffcultyChange(e);
-                            }}>
+                            <select id="difficultySelect" className="select" value={questionDifficulty} onChange={handleDiffcultyChange}>
+                                 <option value="" hidden>
+                                    {questionDifficulty ? questionDifficulty : "Select Difficulty"}
+                                </option>
                                 {DIFFICULTY.map (d => (<option key={d.value} value={d.value}>{d.label}</option>))}
                             </select>
                         </label>
@@ -214,6 +219,13 @@ function AiTrivia () {
                                 min="1"
                                 max="25"
                                 defaultValue="10"
+                                value={questionCount  === 0 ? 1 : questionCount}
+                                onChange={(e) => {
+                                    let val = parseInt(e.target.value, 10) || 1;
+                                    if(val > 25) val = 25;
+                                    if(val < 1) val = 1;
+                                    setQuestionCount(val);
+                                }}
                             />
                         </label>
                     </div>
@@ -231,25 +243,18 @@ function AiTrivia () {
                         
                         <label className="field">
                             <span>Questions</span>
-                            <input
-                                id="questionCount"
-                                className="input"
-                                type="number"
-                                min="1"
-                                max="25"
-                                defaultValue="10"
-                            />
+                            <span  className="select">{questionCount}</span>
                         </label>
                     </div>
                 }
 
                 <div className="actions">
-                      {phase === "reset" || phase === "pickingSettings" && <StartButton onStart={(validateGameStart)}/>}
+                      {(phase === "reset" || phase === "pickingSettings") && <StartButton onStart={(validateGameStart)}/>}
                       <button id="resetBtn" className="btn ghost"  disabled={!gameStarted} onClick={() => setPhase("reset")}>Reset</button>
                 </div>
                 </div>
 
-                {phase != "reset" && phase != "pickingSettings" && 
+                {phase !== "reset" && phase !== "pickingSettings" && 
                 <div className="statusbar" role="status" aria-live="polite">
                     <div className="status-item">
                         <span className="label">Question</span>
@@ -281,9 +286,15 @@ function AiTrivia () {
                     <span id="qCategory" className="chip">{questionCategory}</span>
                     <span id="qDifficulty" className="chip">{questionDifficulty}</span>
                     </div>
-                    <h2 id="questionText" className="question">
-                        {!gameStarted ? "Press Start to begin!" : questionAi}
-                    </h2>
+                        <h2 id="questionText" className="question">
+                            {!gameStarted && "Press Start to Begin!"}
+                            {phase === "loadingQuestion" && 
+                            <div className="loading">
+                                Loading<span class="dots"><i></i><i></i><i></i></span>
+                            </div>
+                            }
+                            {(phase === "readingQuestion" || phase === "answeredQuestion") && questionAi}
+                        </h2>
 
                     {(phase === "readingQuestion" || phase === "answeredQuestion") && 
                         <div className="">
@@ -325,10 +336,17 @@ function AiTrivia () {
                         </div>
                            
                      }
-                    
-                    <div className="card-actions">
-                        <button id="nextBtn" className="btn" disabled>Next</button>
-                    </div>
+
+                    {phase !== "answeredQuestion" ? 
+                        <div className="card-actions">
+                            <button id="nextBtn" className="btn next" disabled>Next</button>
+                        </div>
+                    : 
+                         <div className="card-actions">
+                            <button id="nextBtn" className="btn next" onClick={() => setPhase("loadingQuestion")}>Next</button>
+                        </div>
+                    }
+                
                 </article>
 
                 {/* Right Sidebar: AI helpers */}

@@ -22,11 +22,11 @@ function AiTrivia () {
 
     const [questionCategory, setQuestionCategory] = useState('');
     const [questionDifficulty , setQuestionDifficulty] = useState('');
-    const [questionCount, setQuestionCount] = useState(0);
-    const [questionAi, setQuestionAi] = useState();
+    const [questionCount, setQuestionCount] = useState(1);
+    const [questionAi, setQuestionAi] = useState([]);
     const [answerAi, setAnswerAi] = useState([]);
-    const [explainationAi, setExplanationAi] = useState();
-    const [choicesAi, setChoicesAi] = useState([]);
+    const [explainationAi, setExplanationAi] = useState([]);
+    const [choicesAi, setChoicesAi] = useState([],[]);
     const [userChoice, setUserChoice] = useState();
     const [timeLeftMs, setTimeLeftMs] = useState(QUESTION_TIME_MS);
     const rafRef = useRef(null);
@@ -103,14 +103,21 @@ function AiTrivia () {
                 throw new Error('Network response was not ok');
         
             const data =  await response.json();
-
-
             let parsedData = JSON.parse(data.response);
+             console.log(">>> RESPONSE : "+ parsedData);
+            console.log(">>> RESPONSE Question : "+ parsedData[0].question);
+
+            let trimQuestions = parsedData.substring(parsedData.indexOf("{"), parsedData.indexOf("}") + 1);
+
+            let questions = {};
+
+            for (let i = 0; i < questionCount; i++)
+               questions.push(parsedData[i].question);
+            
+            setQuestionAi(questions);
+
             setAnswerAi(parsedData.answer);
             setExplanationAi(parsedData.explanation);
-
-            setQuestionAi(parsedData.question);
-
             let choices = parsedData.choices;
             setChoicesAi([choices[0], choices[1], choices[2] , choices[3]]);
 
@@ -293,7 +300,7 @@ function AiTrivia () {
                                 Loading<span class="dots"><i></i><i></i><i></i></span>
                             </div>
                             }
-                            {(phase === "readingQuestion" || phase === "answeredQuestion") && questionAi}
+                            {(phase === "readingQuestion" || phase === "answeredQuestion") && questionAi[0]}
                         </h2>
 
                     {(phase === "readingQuestion" || phase === "answeredQuestion") && 
